@@ -4,7 +4,8 @@ using System.Text;
 
 namespace ProjectGenspilGroup8.Services
 {
-    internal class InventoryManager
+    public class InventoryManager
     {
+
     }
 }
