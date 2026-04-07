@@ -7,7 +7,6 @@ namespace ProjectGenspilGroup8
         static void Main(string[] args)
         {
             Menu.MenuMain();
-            Console.ReadLine();
         }
     }
 }

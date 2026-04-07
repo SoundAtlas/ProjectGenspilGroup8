@@ -10,70 +10,58 @@ namespace ProjectGenspilGroup8.UI
         {
             string[] menuMain =
             {
-                    "SOEG I LAGERBEHOLDNING",
-                    "TILFOEJ SPIL",
-                    "FJERN SPIL",
-                    "REGISTRER FORESPOERGELSE",
-                    "PRINT LAGERLISTE",
-                    "AFSLUT",
+                "SØG I LAGERBEHOLDNING",
+                "SE SPIL",
+                "TILFØJ SPIL",
+                "FJERN SPIL",
+                "REGISTRER FORESPØRGELSE",
+                "PRINT LAGERLISTE",
+                "AFSLUT",
             };
 
-            Navigation("HOVEDMENU", menuMain);
-        }
-
-        public static int? Navigation(string title, string[] options)
-        {
-            int selected = 0;
-            Console.CursorVisible = false;
             while (true)
+
             {
-                Console.SetCursorPosition(0, 0);
-                Console.WriteLine(title + "\n");
+                int? choice = ConsoleHelpers.Navigation("HOVEDMENU", menuMain);
 
-                for (int i = 0; i < options.Length; i++)
+                if (choice == null)
                 {
-                    if (i == selected)
-                    {
-                        Console.WriteLine($" > {options[i]}  ");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"   {options[i]}   ");
-                    }
+                    return;
                 }
 
-                var key = Console.ReadKey(true).Key;
-                int lastIndex = options.Length - 1;
-
-                if (key == ConsoleKey.Escape)
+                if (choice == 0)
                 {
-                    Console.Clear();
-                    return null;
+                    //SearchGames
                 }
 
-                if (key == ConsoleKey.UpArrow || key == ConsoleKey.W)
+                if (choice == 1)
                 {
-                    selected--;
-
-                    if (selected < 0)
-                    {
-                        selected = lastIndex;
-                    }
+                    //ViewGames
                 }
 
-                if (key == ConsoleKey.DownArrow || key == ConsoleKey.S)
+                if (choice == 2)
                 {
-                    selected++;
-
-                    if (selected > lastIndex)
-                    {
-                        selected = 0;
-                    }
+                    //AddGame
                 }
 
-                if (key == ConsoleKey.Enter)
+                if (choice == 3)
                 {
-                    return selected;
+                    //RemoveGame
+                }
+
+                if (choice == 4)
+                {
+                    //RegisterRequest
+                }
+
+                if (choice == 5)
+                {
+                    //PrintInventory
+                }
+
+                if (choice == 6)
+                {
+                    //Exit
                 }
             }
         }
