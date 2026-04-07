@@ -18,11 +18,12 @@ namespace ProjectGenspilGroup8.Models
             _status = status;
         }
 
-        // Methods
+        // Properties
         public string GetCustomerName() => _customerName;
         public string GetGameName() => _gameName;
         public string GetStatus() => _status;
 
+        // Methods
         public void SetStatus(string status) => _status = status;
     }
 }

@@ -21,12 +21,13 @@ namespace ProjectGenspilGroup8.Models
             _stockItems = new List<StockItem>();
         }
 
-        // Methods
+        // Properties
         public string GetName() => _name;
         public string GetGenre() => _genre;
         public string GetNumberOfPlayers() => _numberOfPlayers;
         public List<StockItem> GetStockItems() => _stockItems;
 
+        // Methods
         public void AddStockItem(StockItem stockItem) => _stockItems.Add(stockItem);
         public void RemoveStockItem(StockItem stockItem) => _stockItems.Remove(stockItem);
         public int GetTotalQuantity()

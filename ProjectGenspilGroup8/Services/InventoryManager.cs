@@ -17,6 +17,10 @@ namespace ProjectGenspilGroup8.Services
             _requests = new List<Request>();
         }
 
+        // Properties
+        public List<Game> GetAllGames() => _games;
+        public List<Request> GetAllRequests() => _requests;
+
         // Methods
         public void AddGame(Game game)
         {
@@ -44,9 +48,6 @@ namespace ProjectGenspilGroup8.Services
                 return null;
             }
         }
-
-        public List<Game> GetAllGames() => _games;
-        public List<Request> GetAllRequests() => _requests;
 
         public void AddRequest(Request request) => _requests.Add(request);
 
@@ -141,7 +142,6 @@ namespace ProjectGenspilGroup8.Services
 
             return results;
         }
-
 
         public List<Game> SortGamesByName()
         {
