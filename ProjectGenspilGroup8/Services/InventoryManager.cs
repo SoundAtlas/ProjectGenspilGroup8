@@ -51,6 +51,7 @@ namespace ProjectGenspilGroup8.Services
 
         public void AddRequest(Request request) => _requests.Add(request);
 
+
         public List<Game> SearchGames(string name, string genre, string players, string condition, decimal minPrice, decimal maxPrice)
         {
             List<Game> results = new List<Game>();
