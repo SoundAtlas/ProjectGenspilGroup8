@@ -18,7 +18,7 @@ namespace ProjectGenspilGroup8.Models
             _quantity = quantity;
         }
 
-        // Methods
+        // Properties
         public string GetCondition() => _condition;
         public decimal GetPrice() => _price;
         public int GetQuantity() => _quantity;
