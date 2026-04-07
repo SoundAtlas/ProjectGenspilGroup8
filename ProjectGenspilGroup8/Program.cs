@@ -1,10 +1,13 @@
-﻿namespace ProjectGenspilGroup8
+﻿using ProjectGenspilGroup8.UI;
+
+namespace ProjectGenspilGroup8
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            Menu.MenuMain();
+            Console.ReadLine();
         }
     }
 }
