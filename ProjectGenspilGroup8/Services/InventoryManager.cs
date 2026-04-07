@@ -32,9 +32,17 @@ namespace ProjectGenspilGroup8.Services
             // OPTIONAL: Add else-statement to give message that no such game could be found or something
         }
 
-        public Game FindGameByName (string name)
+        // Method to finding a game by name - the question mark means it will either return a Game OR null
+        public Game? FindGameByName (string name)
         {
-            return _games.FirstOrDefault(game => game.GetName().ToLower() == name.ToLower());
+            if (!string.IsNullOrEmpty(name))
+            {
+                return _games.FirstOrDefault(game => game.GetName().ToLower() == name.ToLower());
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public List<Game> GetAllGames() => _games;
