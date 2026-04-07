@@ -61,7 +61,8 @@ namespace ProjectGenspilGroup8.UI
 
                 if (choice == 6)
                 {
-                    //Exit
+                    Console.Clear();
+                    break;
                 }
             }
         }
