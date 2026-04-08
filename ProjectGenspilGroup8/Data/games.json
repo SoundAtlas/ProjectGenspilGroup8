@@ -1,14 +1,20 @@
 [
   {
-    "Name": "Baldur\u0027s Gate III",
-    "Genre": "Adventure",
-    "NumberOfPlayers": "5\u002B",
-    "StockItems": []
-  },
-  {
     "Name": "Dark Souls",
     "Genre": "Soulslike",
     "NumberOfPlayers": "1\u002B",
+    "StockItems": []
+  },
+  {
+    "Name": "Ludo",
+    "Genre": "Classic",
+    "NumberOfPlayers": "1",
+    "StockItems": []
+  },
+  {
+    "Name": "Ludo",
+    "Genre": "Classic",
+    "NumberOfPlayers": "2",
     "StockItems": []
   },
   {

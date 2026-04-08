@@ -56,7 +56,7 @@ namespace ProjectGenspilGroup8.UI
                         Console.WriteLine("Søgeresultater:");
                         foreach (Game game in results)
                         {
-                            Console.WriteLine($"- {game.Name} | Genre: {game.Genre} | Antal spillere: {game.NumberOfPlayers} | På lager: {game.GetTotalQuantity()}");
+                            Console.WriteLine($"- {game.GetName()} | Genre: {game.GetGenre()} | Antal spillere: {game.GetNumberOfPlayers()} | På lager: {game.GetTotalQuantity()}");
                         }
                         Console.ReadKey();
                     }
@@ -110,7 +110,7 @@ namespace ProjectGenspilGroup8.UI
 
                         foreach (Game game in results)
                         {
-                            games.Add($"- {game.Name} | Genre: {game.Genre} | Antal spillere: {game.NumberOfPlayers} | På lager: {game.GetTotalQuantity()}");
+                            games.Add($"- {game.GetName()} | Genre: {game.GetGenre()} | Antal spillere: {game.GetNumberOfPlayers()} | På lager: {game.GetTotalQuantity()}");
                         }
 
                         int? deletionChoice = ConsoleHelpers.Navigation("Vælg det spil, der skal slettes:", games.ToArray());
@@ -119,7 +119,7 @@ namespace ProjectGenspilGroup8.UI
                         {
                             Game selectedGame = results[deletionChoice.Value];
 
-                            inventoryManager.RemoveGame(selectedGame.Name);
+                            inventoryManager.RemoveGame(selectedGame);
 
                             // This updates the JSON file
                             fileHandler.SaveGames(inventoryManager.GetAllGames());

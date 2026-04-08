@@ -27,11 +27,9 @@ namespace ProjectGenspilGroup8.Services
             _games.Add(game);
         }
 
-        public void RemoveGame(string gameName)
+        public void RemoveGame(Game game)
         {
-            var game = FindGameByName(gameName);
-            if (game != null)
-                _games.Remove(game);
+            _games.Remove(game);
         }
 
         // Method to finding a game by name - the question mark means it will either return a Game OR null
@@ -39,7 +37,7 @@ namespace ProjectGenspilGroup8.Services
         {
             if (!string.IsNullOrEmpty(name))
             {
-                return _games.FirstOrDefault(game => game.Name.ToLower() == name.ToLower());
+                return _games.FirstOrDefault(game => game.GetName().ToLower() == name.ToLower());
             }
             else
             {
@@ -61,7 +59,7 @@ namespace ProjectGenspilGroup8.Services
                 // Name filter
                 if (!string.IsNullOrEmpty(name))
                 {
-                    if (!game.Name.ToLower().Contains(name.ToLower()))
+                    if (!game.GetName().ToLower().Contains(name.ToLower()))
                     {
                         gameMatches = false;
                     }
@@ -70,7 +68,7 @@ namespace ProjectGenspilGroup8.Services
                 // Genre
                 if (!string.IsNullOrEmpty(genre))
                 {
-                    if (game.Genre.ToLower() != genre.ToLower())
+                    if (game.GetGenre().ToLower() != genre.ToLower())
                     {
                         gameMatches = false;
                     }
@@ -79,7 +77,7 @@ namespace ProjectGenspilGroup8.Services
                 // Players
                 if (!string.IsNullOrEmpty(players))
                 {
-                    if (game.NumberOfPlayers != players)
+                    if (game.GetNumberOfPlayers() != players)
                     {
                         gameMatches = false;
                     }
@@ -90,7 +88,7 @@ namespace ProjectGenspilGroup8.Services
                 {
                     bool stockMatch = true;
 
-                    foreach (StockItem item in game.StockItems)
+                    foreach (StockItem item in game.GetStockItems())
                     {
                         bool itemMatches = true;
 
@@ -144,12 +142,12 @@ namespace ProjectGenspilGroup8.Services
 
         public List<Game> SortGamesByName()
         {
-            return _games.OrderBy(game => game.Name).ToList();
+            return _games.OrderBy(game => game.GetName()).ToList();
         }
 
         public List<Game> SortGamesByGenre()
         {
-            return _games.OrderBy(game => game.Genre).ToList();
+            return _games.OrderBy(game => game.GetGenre()).ToList();
         }
     }
 }
