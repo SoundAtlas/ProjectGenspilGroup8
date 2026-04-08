@@ -16,5 +16,17 @@
     "Genre": "Soulslike",
     "NumberOfPlayers": "1\u002B",
     "StockItems": []
+  },
+  {
+    "Name": "Ludo",
+    "Genre": "Classic",
+    "NumberOfPlayers": "4",
+    "StockItems": []
+  },
+  {
+    "Name": "ludoc340t",
+    "Genre": "clasiscasdf",
+    "NumberOfPlayers": "54",
+    "StockItems": []
   }
 ]

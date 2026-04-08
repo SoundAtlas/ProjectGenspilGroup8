@@ -91,7 +91,34 @@ namespace ProjectGenspilGroup8.UI
 
                 if (choice == 2)
                 {
-                    //RemoveGame
+                    Console.Clear();
+
+                    Console.Write("Spil Navn: ");
+                    string ? gameName = Console.ReadLine();
+
+                    List<Game> results = inventoryManager.SearchGames(gameName, "", "", condition: "", minPrice: 0, maxPrice: decimal.MaxValue);
+                    Console.Clear();
+
+                    if (results.Count == 0)
+                    {
+                        Console.WriteLine("Ingen spil fundet.");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        List<string> games = new List<string>();
+
+                        foreach (Game game in results)
+                        {
+                            games.Add($"- {game.Name} | Genre: {game.Genre} | Antal spillere: {game.NumberOfPlayers} | På lager: {game.GetTotalQuantity()}");
+                        }
+
+                        int? deletionChoice = ConsoleHelpers.Navigation("Vælg det spil, der skal slettes:", games.ToArray());
+
+                        Console.ReadKey();
+                    }
+
+                    Console.Clear();
                 }
 
                 if (choice == 3)
