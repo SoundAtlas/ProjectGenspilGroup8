@@ -1,11 +1,5 @@
 [
   {
-    "Name": "Ludo",
-    "Genre": "Classic",
-    "NumberOfPlayers": "4",
-    "StockItems": []
-  },
-  {
     "Name": "Baldur\u0027s Gate III",
     "Genre": "Adventure",
     "NumberOfPlayers": "5\u002B",
@@ -21,12 +15,6 @@
     "Name": "Ludo",
     "Genre": "Classic",
     "NumberOfPlayers": "4",
-    "StockItems": []
-  },
-  {
-    "Name": "ludoc340t",
-    "Genre": "clasiscasdf",
-    "NumberOfPlayers": "54",
     "StockItems": []
   }
 ]

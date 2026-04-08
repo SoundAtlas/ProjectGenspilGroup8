@@ -32,8 +32,6 @@ namespace ProjectGenspilGroup8.Services
             var game = FindGameByName(gameName);
             if (game != null)
                 _games.Remove(game);
-            // OPTIONAL: Add confirmation (do you want to remove this game?)
-            // OPTIONAL: Add else-statement to give message that no such game could be found or something
         }
 
         // Method to finding a game by name - the question mark means it will either return a Game OR null

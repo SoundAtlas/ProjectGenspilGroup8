@@ -115,6 +115,19 @@ namespace ProjectGenspilGroup8.UI
 
                         int? deletionChoice = ConsoleHelpers.Navigation("Vælg det spil, der skal slettes:", games.ToArray());
 
+                        if (deletionChoice.HasValue)
+                        {
+                            Game selectedGame = results[deletionChoice.Value];
+
+                            inventoryManager.RemoveGame(selectedGame.Name);
+
+                            // This updates the JSON file
+                            fileHandler.SaveGames(inventoryManager.GetAllGames());
+                            // OPTIONAL: Add confirmation (do you want to remove this game?)
+                            
+                            Console.WriteLine("\nSpil slettet!");
+
+                        }
                         Console.ReadKey();
                     }
 
