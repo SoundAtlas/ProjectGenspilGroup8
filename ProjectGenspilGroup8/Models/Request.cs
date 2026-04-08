@@ -6,24 +6,26 @@ namespace ProjectGenspilGroup8.Models
 {
     public class Request
     {
-        private string _customerName;
-        private string _gameName;
-        private string _status;
+        // Properties (needed for JSON)
+        public string CustomerName { get; set; }
+        public string GameName { get; set; }
+        public string Status { get; set; }
+
+        // Empty constructor (required for deserialization)
+        public Request() { }
 
         // Constructor
         public Request(string customerName, string gameName, string status)
         {
-            _customerName = customerName;
-            _gameName = gameName;
-            _status = status;
+            CustomerName = customerName;
+            GameName = gameName;
+            Status = status;
         }
 
-        // Properties
-        public string GetCustomerName() => _customerName;
-        public string GetGameName() => _gameName;
-        public string GetStatus() => _status;
-
-        // Methods
-        public void SetStatus(string status) => _status = status;
+        // Method
+        public void SetStatus(string status)
+        {
+            Status = status;
+        }
     }
 }

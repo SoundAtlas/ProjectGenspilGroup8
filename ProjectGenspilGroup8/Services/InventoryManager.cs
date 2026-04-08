@@ -41,7 +41,7 @@ namespace ProjectGenspilGroup8.Services
         {
             if (!string.IsNullOrEmpty(name))
             {
-                return _games.FirstOrDefault(game => game.GetName().ToLower() == name.ToLower());
+                return _games.FirstOrDefault(game => game.Name.ToLower() == name.ToLower());
             }
             else
             {
@@ -63,7 +63,7 @@ namespace ProjectGenspilGroup8.Services
                 // Name filter
                 if (!string.IsNullOrEmpty(name))
                 {
-                    if (!game.GetName().ToLower().Contains(name.ToLower()))
+                    if (!game.Name.ToLower().Contains(name.ToLower()))
                     {
                         gameMatches = false;
                     }
@@ -72,7 +72,7 @@ namespace ProjectGenspilGroup8.Services
                 // Genre
                 if (!string.IsNullOrEmpty(genre))
                 {
-                    if (game.GetGenre().ToLower() != genre.ToLower())
+                    if (game.Genre.ToLower() != genre.ToLower())
                     {
                         gameMatches = false;
                     }
@@ -81,7 +81,7 @@ namespace ProjectGenspilGroup8.Services
                 // Players
                 if (!string.IsNullOrEmpty(players))
                 {
-                    if (game.GetNumberOfPlayers() != players)
+                    if (game.NumberOfPlayers != players)
                     {
                         gameMatches = false;
                     }
@@ -92,7 +92,7 @@ namespace ProjectGenspilGroup8.Services
                 {
                     bool stockMatch = true;
 
-                    foreach (StockItem item in game.GetStockItems())
+                    foreach (StockItem item in game.StockItems)
                     {
                         bool itemMatches = true;
 
@@ -146,12 +146,12 @@ namespace ProjectGenspilGroup8.Services
 
         public List<Game> SortGamesByName()
         {
-            return _games.OrderBy(game => game.GetName()).ToList();
+            return _games.OrderBy(game => game.Name).ToList();
         }
 
         public List<Game> SortGamesByGenre()
         {
-            return _games.OrderBy(game => game.GetGenre()).ToList();
+            return _games.OrderBy(game => game.Genre).ToList();
         }
     }
 }

@@ -9,16 +9,23 @@ namespace ProjectGenspilGroup8.Persistence
 {
     internal class FileHandler
     {
-        private const string GamesFile = "games.json";
-        private const string RequestsFile = "requests.json";
+        string gamePath = "..\\..\\..\\Data\\games.json";
+        string requestPath = "..\\..\\..\\Data\\requests.json";
 
         public List<Game> LoadGames()
         {
-            if (!File.Exists(GamesFile))
+            if (!File.Exists(gamePath))
+            {
+                File.WriteAllText(gamePath, "[]");
+                return new List<Game>();
+            }
+            string json = File.ReadAllText(gamePath);
+
+            if (string.IsNullOrWhiteSpace(json))
             {
                 return new List<Game>();
             }
-            string json = File.ReadAllText(GamesFile);
+
             return JsonSerializer.Deserialize<List<Game>>(json) ?? new List<Game>();
         }
 
@@ -29,16 +36,23 @@ namespace ProjectGenspilGroup8.Persistence
                 WriteIndented = true 
             });
 
-            File.WriteAllText(GamesFile, json);
+            File.WriteAllText(gamePath, json);
         }
 
         public List<Request> LoadRequests()
         {
-            if (!File.Exists(RequestsFile))
+            if (!File.Exists(requestPath))
+            {
+                File.WriteAllText(requestPath, "[]");
+                return new List<Request>();
+            }
+            string json = File.ReadAllText(requestPath);
+
+            if (string.IsNullOrWhiteSpace(json))
             {
                 return new List<Request>();
             }
-            string json = File.ReadAllText(RequestsFile);
+
             return JsonSerializer.Deserialize<List<Request>>(json) ?? new List<Request>();
         }
 
@@ -48,7 +62,8 @@ namespace ProjectGenspilGroup8.Persistence
             {
                 WriteIndented = true
             });
-            File.WriteAllText(RequestsFile, json);
+
+            File.WriteAllText(requestPath, json);
         }
     }
 }

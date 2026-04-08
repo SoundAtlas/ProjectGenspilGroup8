@@ -56,7 +56,7 @@ namespace ProjectGenspilGroup8.UI
                         Console.WriteLine("Søgeresultater:");
                         foreach (Game game in results)
                         {
-                            Console.WriteLine($"- {game.GetName()} | Genre: {game.GetGenre()} | Antal spillere: {game.GetNumberOfPlayers()} | På lager: {game.GetTotalQuantity()}");
+                            Console.WriteLine($"- {game.Name} | Genre: {game.Genre} | Antal spillere: {game.NumberOfPlayers} | På lager: {game.GetTotalQuantity()}");
                         }
                         Console.ReadKey();
                     }
@@ -80,6 +80,7 @@ namespace ProjectGenspilGroup8.UI
                     Game game = new Game(gameName, genre, numberOfPlayers);
 
                     inventoryManager.AddGame(game);
+                    fileHandler.SaveGames(inventoryManager.GetAllGames());
 
                     Console.Clear();
 
@@ -106,6 +107,7 @@ namespace ProjectGenspilGroup8.UI
                     Request request = new Request(customerName, gameName, "Under behandling");
 
                     inventoryManager.AddRequest(request);
+                    fileHandler.SaveRequests(inventoryManager.GetAllRequests());
 
                     Console.Clear(); 
 
