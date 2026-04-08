@@ -8,7 +8,7 @@ namespace ProjectGenspilGroup8.UI
 {
     internal class Menu
     {
-        public static void MenuMain()
+        public static void MenuMain(InventoryManager inventoryManager, Persistence.FileHandler fileHandler)
         {
             string[] menuMain =
             {
@@ -19,8 +19,6 @@ namespace ProjectGenspilGroup8.UI
                 "PRINT LAGERLISTE",
                 "AFSLUT",
             };
-
-            InventoryManager inventoryManager = new InventoryManager();
 
             while (true)
 

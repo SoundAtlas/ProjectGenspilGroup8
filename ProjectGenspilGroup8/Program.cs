@@ -1,4 +1,5 @@
-﻿using ProjectGenspilGroup8.UI;
+﻿using ProjectGenspilGroup8.Services;
+using ProjectGenspilGroup8.UI;
 
 namespace ProjectGenspilGroup8
 {
@@ -6,7 +7,20 @@ namespace ProjectGenspilGroup8
     {
         static void Main(string[] args)
         {
-            Menu.MenuMain();
+            Persistence.FileHandler fileHandler = new Persistence.FileHandler();
+            InventoryManager inventoryManager = new InventoryManager();
+
+            foreach (var game in fileHandler.LoadGames())
+            {
+                inventoryManager.AddGame(game);
+            }
+
+            foreach (var request in fileHandler.LoadRequests())
+            {
+                inventoryManager.AddRequest(request);
+            }
+
+            Menu.MenuMain(inventoryManager, fileHandler);
         }
     }
 }
