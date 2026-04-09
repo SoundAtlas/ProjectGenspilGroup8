@@ -1,0 +1,26 @@
+[
+  {
+    "Name": "Dark Souls",
+    "Genre": "Soulslike",
+    "NumberOfPlayers": "1\u002B",
+    "StockItems": []
+  },
+  {
+    "Name": "Ludo",
+    "Genre": "Classic",
+    "NumberOfPlayers": "1",
+    "StockItems": []
+  },
+  {
+    "Name": "Ludo",
+    "Genre": "Classic",
+    "NumberOfPlayers": "2",
+    "StockItems": []
+  },
+  {
+    "Name": "Ludo",
+    "Genre": "Classic",
+    "NumberOfPlayers": "4",
+    "StockItems": []
+  }
+]
