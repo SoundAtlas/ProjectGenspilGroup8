@@ -48,7 +48,7 @@ namespace ProjectGenspilGroup8.Services
         public void AddRequest(Request request) => _requests.Add(request);
 
 
-        public List<Game> SearchGames(string name, string genre, string players, string condition, decimal minPrice, decimal maxPrice)
+        public List<Game> SearchGames(string name, string genre, string players, Condition? condition, decimal minPrice, decimal maxPrice)
         {
             List<Game> results = new List<Game>();
 
@@ -84,7 +84,7 @@ namespace ProjectGenspilGroup8.Services
                 }
 
                 // Condition + Price (check stock items)
-                if (!string.IsNullOrEmpty(condition) || minPrice > 0 || maxPrice > 0)
+                if (condition.HasValue || minPrice > 0 || maxPrice > 0)
                 {
                     bool stockMatch = true;
 
@@ -93,9 +93,9 @@ namespace ProjectGenspilGroup8.Services
                         bool itemMatches = true;
 
                         // Condition
-                        if (!string.IsNullOrEmpty(condition))
+                        if (condition.HasValue)
                         {
-                            if (item.GetCondition().ToLower() != condition.ToLower())
+                            if (item.GetCondition() != condition.Value)
                             {
                                 itemMatches = false;
                             }

@@ -43,7 +43,7 @@ namespace ProjectGenspilGroup8.UI
                     Console.Write("Antal spillere: ");
                     string? numberOfPlayers = Console.ReadLine();
 
-                    List<Game> results = inventoryManager.SearchGames(gameName, genre, numberOfPlayers, condition: "", minPrice: 0, maxPrice: decimal.MaxValue);
+                    List<Game> results = inventoryManager.SearchGames(gameName, genre, numberOfPlayers, condition:null, minPrice: 0, maxPrice: decimal.MaxValue);
                     Console.Clear();
 
                     if (results.Count == 0)
@@ -96,7 +96,7 @@ namespace ProjectGenspilGroup8.UI
                     Console.Write("Spil Navn: ");
                     string ? gameName = Console.ReadLine();
 
-                    List<Game> results = inventoryManager.SearchGames(gameName, "", "", condition: "", minPrice: 0, maxPrice: decimal.MaxValue);
+                    List<Game> results = inventoryManager.SearchGames(gameName, "", "", condition:null, minPrice: 0, maxPrice: decimal.MaxValue);
                     Console.Clear();
 
                     if (results.Count == 0)
