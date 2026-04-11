@@ -1,26 +1,26 @@
 [
   {
-    "Name": "Dark Souls",
-    "Genre": "Soulslike",
-    "NumberOfPlayers": "1\u002B",
-    "StockItems": []
-  },
-  {
     "Name": "Ludo",
     "Genre": "Classic",
-    "NumberOfPlayers": "1",
-    "StockItems": []
+    "NumberOfPlayers": "2-4",
+    "StockItems": [
+      {
+        "Condition": "New",
+        "Price": 149.95,
+        "Quantity": 2
+      }
+    ]
   },
   {
-    "Name": "Ludo",
-    "Genre": "Classic",
-    "NumberOfPlayers": "2",
-    "StockItems": []
-  },
-  {
-    "Name": "Ludo",
-    "Genre": "Classic",
-    "NumberOfPlayers": "4",
-    "StockItems": []
+    "Name": "Catan",
+    "Genre": "Strategy",
+    "NumberOfPlayers": "3-4",
+    "StockItems": [
+      {
+        "Condition": "Good",
+        "Price": 100,
+        "Quantity": 2
+      }
+    ]
   }
 ]

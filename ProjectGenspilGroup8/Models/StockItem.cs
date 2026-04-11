@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace ProjectGenspilGroup8.Models
 {
@@ -10,12 +11,21 @@ namespace ProjectGenspilGroup8.Models
         private decimal _price;
         private int _quantity;
 
+        public Condition Condition { get; init; }
+        public decimal Price { get; init; }
+        public int Quantity { get; init; }
+
         // Constructor
+        [JsonConstructor]
         public StockItem(Condition condition, decimal price, int quantity)
         {
-            _condition = condition;
-            _price = price;
-            _quantity = quantity;
+            Condition = condition;
+            Price = price;
+            Quantity = quantity;
+
+            _condition = Condition;
+            _price = Price;
+            _quantity = Quantity;
         }
 
         // Properties

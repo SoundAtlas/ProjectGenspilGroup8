@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectGenspilGroup8.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -62,6 +63,18 @@ namespace ProjectGenspilGroup8.UI
                     return selected;
                 }
             }
+        }
+
+        public static Condition? SelectCondition(string title)
+        {
+            string[] options = Enum.GetNames(typeof(Condition));
+
+            int? choice = Navigation(title, options);
+
+            if (choice == null)
+                return null;
+
+            return (Condition)choice.Value;
         }
     }
 }

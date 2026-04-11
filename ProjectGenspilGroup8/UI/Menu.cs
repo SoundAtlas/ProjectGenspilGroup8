@@ -78,7 +78,28 @@ namespace ProjectGenspilGroup8.UI
                     string? numberOfPlayers = Console.ReadLine();
 
                     Game game = new Game(gameName, genre, numberOfPlayers);
+                    Console.Clear();
 
+                    // Add stock item
+                    Condition? condition = ConsoleHelpers.SelectCondition("Vælg spillets tilstand:");
+
+                    if (condition == null)
+                    {
+                        Console.WriteLine("Annulleret.");
+                        Console.ReadKey();
+                        return;
+                    }
+
+                    Console.Write("\nPris: ");
+                    decimal price = decimal.Parse(Console.ReadLine() ?? "0");
+
+                    Console.Write("Antal: ");
+                    int quantity = int.Parse(Console.ReadLine() ?? "0");
+
+                    StockItem stockItem = new StockItem(condition.Value, price, quantity);
+                    game.AddStockItem(stockItem);
+
+                    // Save game
                     inventoryManager.AddGame(game);
                     fileHandler.SaveGames(inventoryManager.GetAllGames());
 
