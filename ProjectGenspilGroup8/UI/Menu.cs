@@ -14,6 +14,7 @@ namespace ProjectGenspilGroup8.UI
             {
                 "SØG I LAGERBEHOLDNING",
                 "TILFØJ SPIL",
+                "REDIGER SPIL",
                 "FJERN SPIL",
                 "REGISTRER FORESPØRGELSE",
                 "SE FORESPØRGSELER",
@@ -113,6 +114,63 @@ namespace ProjectGenspilGroup8.UI
                 {
                     Console.Clear();
 
+                    string searchName = ConsoleHelpers.GetRequiredString("Indtast navnet på det spil, du vil redigere: ");
+
+                    Game? gameToEdit = inventoryManager.FindGameByName(searchName);
+
+                    if (gameToEdit == null)
+                    {
+                        Console.WriteLine("Spil ikke fundet.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
+
+                    Console.Clear();
+
+                    Console.WriteLine("Efterlad tom for at beholde nuværende værdi.\n");
+                    Console.WriteLine($"Nuværende navn: {gameToEdit.GetName()}");
+                    Console.Write("Nyt navn: ");
+                    string? newName = Console.ReadLine();
+
+                    Console.WriteLine($"\nNuværende genre: {gameToEdit.GetGenre()}");
+                    Console.Write("Ny genre: ");
+                    string? newGenre = Console.ReadLine();
+
+                    Console.WriteLine($"\nNuværende antal spillere: {gameToEdit.GetNumberOfPlayers()}");
+                    Console.Write("Nyt antal spillere: ");
+                    string? newNumberOfPlayers = Console.ReadLine();
+
+                    // Use old values if new ones are empty
+                    string finalName = string.IsNullOrWhiteSpace(newName) ? gameToEdit.GetName() : newName;
+                    string finalGenre = string.IsNullOrWhiteSpace(newGenre) ? gameToEdit.GetGenre() : newGenre;
+                    string finalPlayers = string.IsNullOrWhiteSpace(newNumberOfPlayers) ? gameToEdit.GetNumberOfPlayers() : newNumberOfPlayers;
+
+                    // Create a new Game object with the updated values (or old values if not changed)
+                    Game updatedGame = new Game(finalName, finalGenre, finalPlayers);
+
+                    // Preserve existing stock items
+                    foreach (StockItem item in gameToEdit.GetStockItems())
+                    {
+                        updatedGame.AddStockItem(item);
+                    }
+
+                    // Replace old game
+                    inventoryManager.RemoveGame(gameToEdit);
+                    inventoryManager.AddGame(updatedGame);
+
+                    // Save changes
+                    fileHandler.SaveGames(inventoryManager.GetAllGames());
+
+                    Console.WriteLine("\nSpil opdateret! Tryk på en vilkårlig tast for at fortsætte.");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
+
+                if (choice == 3)
+                {
+                    Console.Clear();
+
                     Console.Write("Spil Navn: ");
                     string ? gameName = Console.ReadLine();
 
@@ -154,7 +212,7 @@ namespace ProjectGenspilGroup8.UI
                     Console.Clear();
                 }
 
-                if (choice == 3)
+                if (choice == 4)
                 {
                     Console.Clear();
 
@@ -174,7 +232,7 @@ namespace ProjectGenspilGroup8.UI
                     Console.Clear();
                 }
 
-                if (choice == 4)
+                if (choice == 5)
                 {
                     Console.Clear();
 
@@ -202,7 +260,7 @@ namespace ProjectGenspilGroup8.UI
                     Console.Clear();
                 }
 
-                if (choice == 5)
+                if (choice == 6)
                 {
                     Console.Clear();
 
@@ -216,7 +274,7 @@ namespace ProjectGenspilGroup8.UI
                     Console.Clear();
                 }
 
-                if (choice == 6)
+                if (choice == 7)
                 {
                     break;
                 }
