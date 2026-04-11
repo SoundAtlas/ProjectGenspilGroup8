@@ -56,84 +56,74 @@ namespace ProjectGenspilGroup8.Services
             {
                 bool gameMatches = true;
 
-                // Name filter
-                if (!string.IsNullOrEmpty(name))
+                // 🔹 Name filter
+                if (!string.IsNullOrEmpty(name) &&
+                    !game.GetName().ToLower().Contains(name.ToLower()))
                 {
-                    if (!game.GetName().ToLower().Contains(name.ToLower()))
-                    {
-                        gameMatches = false;
-                    }
+                    gameMatches = false;
                 }
 
-                // Genre
-                if (!string.IsNullOrEmpty(genre))
+                // 🔹 Genre filter
+                if (!string.IsNullOrEmpty(genre) &&
+                    game.GetGenre().ToLower() != genre.ToLower())
                 {
-                    if (game.GetGenre().ToLower() != genre.ToLower())
-                    {
-                        gameMatches = false;
-                    }
+                    gameMatches = false;
                 }
 
-                // Players
-                if (!string.IsNullOrEmpty(players))
+                // 🔹 Players filter
+                if (!string.IsNullOrEmpty(players) &&
+                    game.GetNumberOfPlayers() != players)
                 {
-                    if (game.GetNumberOfPlayers() != players)
-                    {
-                        gameMatches = false;
-                    }
+                    gameMatches = false;
                 }
 
-                // Condition + Price (check stock items)
-                if (condition.HasValue || minPrice > 0 || maxPrice > 0)
+                // 🔹 Stock-based filtering
+                if (condition.HasValue || minPrice > 0 || maxPrice < decimal.MaxValue)
                 {
-                    bool stockMatch = true;
+                    bool hasMatchingStock = false;
 
                     foreach (StockItem item in game.GetStockItems())
                     {
                         bool itemMatches = true;
 
                         // Condition
-                        if (condition.HasValue)
+                        if (condition.HasValue &&
+                            item.GetCondition() != condition.Value)
                         {
-                            if (item.GetCondition() != condition.Value)
-                            {
-                                itemMatches = false;
-                            }
+                            itemMatches = false;
                         }
 
                         // Min price
-                        if (minPrice > 0)
+                        if (minPrice > 0 &&
+                            item.GetPrice() < minPrice)
                         {
-                            if (item.GetPrice() < minPrice)
-                            {
-                                itemMatches = false;
-                            }
+                            itemMatches = false;
                         }
 
                         // Max price
-                        if (maxPrice > 0)
+                        if (maxPrice < decimal.MaxValue &&
+                            item.GetPrice() > maxPrice)
                         {
-                            if (item.GetPrice() > maxPrice)
-                            {
-                                itemMatches = false;
-                            }
+                            itemMatches = false;
                         }
 
-                        if (!itemMatches)
+                        // ✅ KEY FIX: at least ONE match
+                        if (itemMatches)
                         {
-                            stockMatch = false;
+                            hasMatchingStock = true;
+                            break;
                         }
                     }
 
-                    if (!stockMatch)
+                    if (!hasMatchingStock)
                     {
                         gameMatches = false;
                     }
+                }
 
-                    if (gameMatches)
-                    {
-                        results.Add(game);
-                    }
+                if (gameMatches)
+                {
+                    results.Add(game);
                 }
             }
 

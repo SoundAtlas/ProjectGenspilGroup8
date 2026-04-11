@@ -43,7 +43,18 @@ namespace ProjectGenspilGroup8.UI
                     Console.Write("Antal spillere: ");
                     string? numberOfPlayers = Console.ReadLine();
 
-                    List<Game> results = inventoryManager.SearchGames(gameName, genre, numberOfPlayers, condition:null, minPrice: 0, maxPrice: decimal.MaxValue);
+                    Condition? condition = ConsoleHelpers.SelectCondition("\n\n\n\nVælg stand (ESC for at springe over):");
+
+                    Console.Write("\nMinimum pris (tryk Enter for ingen): ");
+                    string? minPriceInput = Console.ReadLine();
+
+                    Console.Write("Maximum pris (tryk Enter for ingen): ");
+                    string? maxPriceInput = Console.ReadLine();
+
+                    decimal minPrice = string.IsNullOrWhiteSpace(minPriceInput) ? 0 : decimal.Parse(minPriceInput);
+                    decimal maxPrice = string.IsNullOrWhiteSpace(maxPriceInput) ? decimal.MaxValue : decimal.Parse(maxPriceInput);
+
+                    List<Game> results = inventoryManager.SearchGames(gameName, genre, numberOfPlayers, condition, minPrice, maxPrice);
                     Console.Clear();
 
                     if (results.Count == 0)
