@@ -64,11 +64,8 @@ namespace ProjectGenspilGroup8.UI
                     }
                     else
                     {
-                        Console.WriteLine("Søgeresultater:");
-                        foreach (Game game in results)
-                        {
-                            Console.WriteLine($"- {game.GetName()} | Genre: {game.GetGenre()} | Antal spillere: {game.GetNumberOfPlayers()} | På lager: {game.GetTotalQuantity()}");
-                        }
+                        Console.WriteLine("Søgeresultater:\n");
+                        GamePrinter.PrintGameDetails(results);
                         Console.ReadKey();
                     }
                     
@@ -190,7 +187,19 @@ namespace ProjectGenspilGroup8.UI
 
                 if (choice == 4)
                 {
-                    //PrintInventory
+                    if (choice == 4)
+                    {
+                        Console.Clear();
+
+                        var games = inventoryManager.GetAllGames();
+
+                        Console.WriteLine("LAGERLISTE:\n");
+                        GamePrinter.PrintGameDetails(games);
+
+                        Console.WriteLine("\nTryk på en tast for at fortsætte...");
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
                 }
 
                 if (choice == 5)
