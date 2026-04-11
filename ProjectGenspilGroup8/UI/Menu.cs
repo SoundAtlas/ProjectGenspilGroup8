@@ -264,7 +264,31 @@ namespace ProjectGenspilGroup8.UI
                 {
                     Console.Clear();
 
-                    var games = inventoryManager.GetAllGames();
+                    string[] sortOptions =
+                    {
+                        "Sortér efter navn",
+                        "Sortér efter genre",
+                        "Ingen sortering"
+                    };
+
+                    int? sortChoice = ConsoleHelpers.Navigation("Vælg sortering for lagerlisten:", sortOptions);
+
+                    List<Game> games;
+
+                    if (sortChoice == 0)
+                    {
+                        games = inventoryManager.SortGamesByName();
+                    }
+                    else if (sortChoice == 1)
+                    {
+                        games = inventoryManager.SortGamesByGenre();
+                    }
+                    else
+                    {
+                        games = inventoryManager.GetAllGames();
+                    }
+
+                    Console.Clear();
 
                     Console.WriteLine("LAGERLISTE:\n");
                     GamePrinter.PrintGameDetails(games);
