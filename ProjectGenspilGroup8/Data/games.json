@@ -22,5 +22,17 @@
         "Quantity": 2
       }
     ]
+  },
+  {
+    "Name": "Catan",
+    "Genre": "Strategy",
+    "NumberOfPlayers": "3-4",
+    "StockItems": [
+      {
+        "Condition": "Worn",
+        "Price": 39.95,
+        "Quantity": 1
+      }
+    ]
   }
 ]

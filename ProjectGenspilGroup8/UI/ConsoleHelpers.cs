@@ -76,5 +76,74 @@ namespace ProjectGenspilGroup8.UI
 
             return (Condition)choice.Value;
         }
+
+        public static decimal GetDecimal(string prompt)
+        {
+            while (true)
+            {
+                Console.Write(prompt);
+                string? input = Console.ReadLine();
+
+                if (decimal.TryParse(input, out decimal value) && value >= 0)
+                {
+                    return value;
+                }
+
+                Console.WriteLine("Ugyldigt input. Prøv igen.");
+            }
+        }
+
+        public static decimal GetOptionalDecimal(string prompt, decimal defaultValue)
+        {
+            while (true)
+            {
+                Console.Write(prompt);
+                string? input = Console.ReadLine();
+
+                // Empty = use default (no filter)
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    return defaultValue;
+                }
+
+                if (decimal.TryParse(input, out decimal value) && value >= 0)
+                {
+                    return value;
+                }
+
+                Console.WriteLine("Ugyldigt input. Indtast et positivt tal eller tryk Enter for at springe over.");
+            }
+        }
+
+        public static int GetInt(string prompt)
+        {
+            while (true)
+            {
+                Console.Write(prompt);
+                string? input = Console.ReadLine();
+
+                if (int.TryParse(input, out int value) && value >= 0)
+                {
+                    return value;
+                }
+                Console.WriteLine("Ugyldigt input. Indtast et positivt heltal.");
+            }
+        }
+
+        public static string GetRequiredString(string prompt)
+        {
+            while (true)
+            {
+                Console.Write(prompt);
+                string? input = Console.ReadLine();
+
+                if (!string.IsNullOrWhiteSpace(input))
+                {
+                    return input;
+                }
+
+                Console.WriteLine("Feltet må ikke være tomt.");
+            }
+        }
     }
 }

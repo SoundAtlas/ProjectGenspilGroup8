@@ -45,14 +45,8 @@ namespace ProjectGenspilGroup8.UI
 
                     Condition? condition = ConsoleHelpers.SelectCondition("\n\n\n\nVælg stand (ESC for at springe over):");
 
-                    Console.Write("\nMinimum pris (tryk Enter for ingen): ");
-                    string? minPriceInput = Console.ReadLine();
-
-                    Console.Write("Maximum pris (tryk Enter for ingen): ");
-                    string? maxPriceInput = Console.ReadLine();
-
-                    decimal minPrice = string.IsNullOrWhiteSpace(minPriceInput) ? 0 : decimal.Parse(minPriceInput);
-                    decimal maxPrice = string.IsNullOrWhiteSpace(maxPriceInput) ? decimal.MaxValue : decimal.Parse(maxPriceInput);
+                    decimal minPrice = ConsoleHelpers.GetOptionalDecimal("\nMinimum pris (tryk Enter for ingen): ", 0);
+                    decimal maxPrice = ConsoleHelpers.GetOptionalDecimal("Maximum pris (tryk Enter for ingen): ", decimal.MaxValue);
 
                     List<Game> results = inventoryManager.SearchGames(gameName, genre, numberOfPlayers, condition, minPrice, maxPrice);
                     Console.Clear();
@@ -76,8 +70,7 @@ namespace ProjectGenspilGroup8.UI
                 {
                     Console.Clear();
 
-                    Console.Write("Spil Navn: ");
-                    string? gameName = Console.ReadLine();
+                    string gameName = ConsoleHelpers.GetRequiredString("Spil Navn: ");
 
                     Console.Write("Genre: ");
                     string? genre = Console.ReadLine();
@@ -98,11 +91,8 @@ namespace ProjectGenspilGroup8.UI
                         return;
                     }
 
-                    Console.Write("\nPris: ");
-                    decimal price = decimal.Parse(Console.ReadLine() ?? "0");
-
-                    Console.Write("Antal: ");
-                    int quantity = int.Parse(Console.ReadLine() ?? "0");
+                    decimal price = ConsoleHelpers.GetDecimal("\nPris: ");
+                    int quantity = ConsoleHelpers.GetInt("Antal: ");
 
                     StockItem stockItem = new StockItem(condition.Value, price, quantity);
                     game.AddStockItem(stockItem);
@@ -167,11 +157,9 @@ namespace ProjectGenspilGroup8.UI
                 {
                     Console.Clear();
 
-                    Console.Write("Kunde Navn: ");
-                    string? customerName = Console.ReadLine();
+                    string customerName = ConsoleHelpers.GetRequiredString("Kunde Navn: ");
 
-                    Console.Write("Spil Navn: ");
-                    string? gameName = Console.ReadLine(); 
+                    string gameName = ConsoleHelpers.GetRequiredString("Spil Navn: ");
 
                     Request request = new Request(customerName, gameName, "Under behandling");
 
