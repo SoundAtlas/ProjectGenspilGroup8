@@ -3,5 +3,15 @@
     "CustomerName": "Gert",
     "GameName": "MaxiYatzee",
     "Status": "Under behandling"
+  },
+  {
+    "CustomerName": "Rasmus Laustsen Johansen",
+    "GameName": "Kalaha",
+    "Status": "Under behandling"
+  },
+  {
+    "CustomerName": "Ida Ivanovich",
+    "GameName": "Matador",
+    "Status": "Under behandling"
   }
 ]

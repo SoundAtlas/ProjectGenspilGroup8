@@ -16,6 +16,7 @@ namespace ProjectGenspilGroup8.UI
                 "TILFØJ SPIL",
                 "FJERN SPIL",
                 "REGISTRER FORESPØRGELSE",
+                "SE FORESPØRGSELER",
                 "PRINT LAGERLISTE",
                 "AFSLUT",
             };
@@ -177,6 +178,34 @@ namespace ProjectGenspilGroup8.UI
                 {
                     Console.Clear();
 
+                    var requests = inventoryManager.GetAllRequests();
+
+                    if (requests.Count == 0)
+                    {
+                        Console.WriteLine("Ingen forespørgsler fundet.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("FORESPØRGSLER:\n");
+
+                        foreach (var request in requests)
+                        {
+                            Console.WriteLine($"Kunde: {request.CustomerName}");
+                            Console.WriteLine($"Spil: {request.GameName}");
+                            Console.WriteLine($"Status: {request.Status}");
+                            Console.WriteLine(new string('-', 30));
+                        }
+                    }
+
+                    Console.WriteLine("\nTryk på en tast for at fortsætte...");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
+
+                if (choice == 5)
+                {
+                    Console.Clear();
+
                     var games = inventoryManager.GetAllGames();
 
                     Console.WriteLine("LAGERLISTE:\n");
@@ -187,7 +216,7 @@ namespace ProjectGenspilGroup8.UI
                     Console.Clear();
                 }
 
-                if (choice == 5)
+                if (choice == 6)
                 {
                     break;
                 }
