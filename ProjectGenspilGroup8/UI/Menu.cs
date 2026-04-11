@@ -175,19 +175,16 @@ namespace ProjectGenspilGroup8.UI
 
                 if (choice == 4)
                 {
-                    if (choice == 4)
-                    {
-                        Console.Clear();
+                    Console.Clear();
 
-                        var games = inventoryManager.GetAllGames();
+                    var games = inventoryManager.GetAllGames();
 
-                        Console.WriteLine("LAGERLISTE:\n");
-                        GamePrinter.PrintGameDetails(games);
+                    Console.WriteLine("LAGERLISTE:\n");
+                    GamePrinter.PrintGameDetails(games);
 
-                        Console.WriteLine("\nTryk på en tast for at fortsætte...");
-                        Console.ReadKey();
-                        Console.Clear();
-                    }
+                    Console.WriteLine("\nTryk på en tast for at fortsætte...");
+                    Console.ReadKey();
+                    Console.Clear();
                 }
 
                 if (choice == 5)
