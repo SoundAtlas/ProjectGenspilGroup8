@@ -1,6 +1,4 @@
 Navn            Genre           Spillere     Stand        Pris       Antal/Status
 -------------------------------------------------------------------------------------
-Catan           we              2            Good         50.00      2           
-Catan           we              2            Worn         50.00      1           
-Ludo            Classic         2-4          New          149.95     2           
-Sequence        Family          2-4          New          200.00     2           
+Ludo            Classic         3-5          New          149.95     2           
+Test            2               4            New          2.00       4           

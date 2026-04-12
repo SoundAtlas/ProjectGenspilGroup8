@@ -2,7 +2,7 @@
   {
     "Name": "Ludo",
     "Genre": "Classic",
-    "NumberOfPlayers": "3-5",
+    "NumberOfPlayers": "2-4",
     "StockItems": [
       {
         "Condition": "New",
@@ -12,14 +12,26 @@
     ]
   },
   {
-    "Name": "Test",
-    "Genre": "2",
-    "NumberOfPlayers": "4",
+    "Name": "Catan",
+    "Genre": "Strategy",
+    "NumberOfPlayers": "3-4",
     "StockItems": [
       {
-        "Condition": "New",
-        "Price": 2,
-        "Quantity": 4
+        "Condition": "Good",
+        "Price": 100,
+        "Quantity": 2
+      }
+    ]
+  },
+  {
+    "Name": "Catan",
+    "Genre": "Strategy",
+    "NumberOfPlayers": "3-4",
+    "StockItems": [
+      {
+        "Condition": "Worn",
+        "Price": 39.95,
+        "Quantity": 1
       }
     ]
   }
