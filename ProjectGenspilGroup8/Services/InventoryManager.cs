@@ -95,9 +95,53 @@ namespace ProjectGenspilGroup8.Services
                 return false;
             }
 
-            Game game = new Game(name.Trim(), genre?.Trim(), numberOfPlayers?.Trim());
-            StockItem stockItem = new StockItem(condition, price, quantity);
-            game.AddStockItem(stockItem);
+            string trimmedName = name.Trim();
+            string? trimmedGenre = genre?.Trim();
+            string? trimmedPlayers = numberOfPlayers?.Trim();
+
+            Game? existingGame = FindGameByExactName(trimmedName);
+
+            // Case 1: same game already exists as a requested 0-stock placeholder
+            // Replace it with a real stocked game instead of creating a duplicate entry
+            if (existingGame != null &&
+                existingGame.GetTotalQuantity() == 0 &&
+                HasRequestsForGame(trimmedName))
+            {
+                string finalGenre = string.IsNullOrWhiteSpace(trimmedGenre)
+                    ? existingGame.GetGenre()
+                    : trimmedGenre;
+
+                string finalPlayers = string.IsNullOrWhiteSpace(trimmedPlayers)
+                    ? existingGame.GetNumberOfPlayers()
+                    : trimmedPlayers;
+
+                Game updatedGame = new Game(trimmedName, finalGenre, finalPlayers);
+                StockItem stockItem = new StockItem(condition, price, quantity);
+                updatedGame.AddStockItem(stockItem);
+
+                int index = _games.IndexOf(existingGame);
+                if (index == -1)
+                {
+                    return false;
+                }
+
+                _games[index] = updatedGame;
+                return true;
+            }
+
+            // Case 2: game already exists normally
+            // Add stock to the existing game instead of creating another duplicate game
+            if (existingGame != null)
+            {
+                StockItem stockItem = new StockItem(condition, price, quantity);
+                existingGame.AddStockItem(stockItem);
+                return true;
+            }
+
+            // Case 3: game does not exist yet
+            Game game = new Game(trimmedName, trimmedGenre, trimmedPlayers);
+            StockItem newStockItem = new StockItem(condition, price, quantity);
+            game.AddStockItem(newStockItem);
 
             _games.Add(game);
             return true;
@@ -308,6 +352,17 @@ namespace ProjectGenspilGroup8.Services
             }
 
             return results;
+        }
+
+        public bool HasRequestsForGame(string gameName)
+        {
+            if (string.IsNullOrWhiteSpace(gameName))
+            {
+                return false;
+            }
+
+            return _requests.Any(request =>
+                string.Equals(request.GameName, gameName, StringComparison.OrdinalIgnoreCase));
         }
 
         public List<Game> SortGamesByName()

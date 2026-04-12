@@ -20,18 +20,8 @@
     "Status": "Under behandling"
   },
   {
-    "CustomerName": "bob",
-    "GameName": "Test",
-    "Status": "Under behandling"
-  },
-  {
-    "CustomerName": "BOBBY",
+    "CustomerName": "Bob",
     "GameName": "Sequence",
-    "Status": "Under behandling"
-  },
-  {
-    "CustomerName": "boodfb",
-    "GameName": "asdwa",
     "Status": "Under behandling"
   }
 ]

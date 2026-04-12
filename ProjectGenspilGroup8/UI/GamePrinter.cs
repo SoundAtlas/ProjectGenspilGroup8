@@ -1,15 +1,16 @@
 ﻿using ProjectGenspilGroup8.Models;
+using ProjectGenspilGroup8.Services;
 using System.Text;
 
 namespace ProjectGenspilGroup8.UI
 {
-    public class GamePrinter
+    internal class GamePrinter
     {
-        private const string Header = "Navn            Genre           Spillere     Stand      Pris       Antal ";
+        private const string Header = "Navn            Genre           Spillere     Stand        Pris       Antal/Status";
 
-        public static void PrintGameDetails(List<Game> games)
+        public static void PrintGameDetails(List<Game> games, InventoryManager inventoryManager)
         {
-            Console.WriteLine(FormatGameDetails(games));
+            Console.WriteLine(FormatGameDetails(games, inventoryManager));
         }
 
         public static void PrintFilteredResults(List<Game> games, Condition? condition, decimal minPrice, decimal maxPrice)
@@ -21,7 +22,7 @@ namespace ProjectGenspilGroup8.UI
             }
 
             Console.WriteLine(Header);
-            Console.WriteLine(new string('-', 75));
+            Console.WriteLine(new string('-', 85));
 
             foreach (Game game in games)
             {
@@ -46,13 +47,13 @@ namespace ProjectGenspilGroup8.UI
 
                     if (matches)
                     {
-                        Console.WriteLine(FormatGameLine(game, item));
+                        Console.WriteLine(FormatGameLine(game, item, false));
                     }
                 }
             }
         }
 
-        public static string FormatGameDetails(List<Game> games)
+        public static string FormatGameDetails(List<Game> games, InventoryManager inventoryManager)
         {
             if (games == null || games.Count == 0)
             {
@@ -61,28 +62,35 @@ namespace ProjectGenspilGroup8.UI
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(Header);
-            sb.AppendLine(new string('-', 75));
+            sb.AppendLine(new string('-', 85));
 
             foreach (Game game in games)
             {
+                bool showRequested = game.GetTotalQuantity() == 0 &&
+                                     inventoryManager.HasRequestsForGame(game.GetName());
+
                 foreach (StockItem item in game.GetStockItems() ?? new List<StockItem>())
                 {
-                    sb.AppendLine(FormatGameLine(game, item));
+                    sb.AppendLine(FormatGameLine(game, item, showRequested));
                 }
             }
 
             return sb.ToString();
         }
 
-        private static string FormatGameLine(Game game, StockItem item)
+        private static string FormatGameLine(Game game, StockItem item, bool showRequested)
         {
+            string quantityOrStatus = showRequested
+                ? "Requested"
+                : item.GetQuantity().ToString();
+
             return
                 $"{game.GetName(),-15} " +
                 $"{game.GetGenre(),-15} " +
                 $"{game.GetNumberOfPlayers(),-12} " +
-                $"{item.GetCondition(),-10} " +
+                $"{item.GetCondition(),-12} " +
                 $"{item.GetPrice(),-10:0.00} " +
-                $"{item.GetQuantity(),-6}";
+                $"{quantityOrStatus,-12}";
         }
     }
 }

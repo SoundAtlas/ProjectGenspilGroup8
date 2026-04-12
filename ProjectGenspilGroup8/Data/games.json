@@ -12,62 +12,31 @@
     ]
   },
   {
-    "Name": "Catan",
-    "Genre": "Strategy",
-    "NumberOfPlayers": "3-4",
+    "Name": "Sequence",
+    "Genre": "Family",
+    "NumberOfPlayers": "2-4",
     "StockItems": [
       {
-        "Condition": "Good",
-        "Price": 100,
+        "Condition": "New",
+        "Price": 200,
         "Quantity": 2
       }
     ]
   },
   {
     "Name": "Catan",
-    "Genre": "Strategy",
-    "NumberOfPlayers": "3-4",
+    "Genre": "we",
+    "NumberOfPlayers": "2",
     "StockItems": [
+      {
+        "Condition": "Good",
+        "Price": 50,
+        "Quantity": 2
+      },
       {
         "Condition": "Worn",
-        "Price": 39.95,
+        "Price": 50,
         "Quantity": 1
-      }
-    ]
-  },
-  {
-    "Name": "Test",
-    "Genre": "23",
-    "NumberOfPlayers": "2",
-    "StockItems": [
-      {
-        "Condition": "New",
-        "Price": 200,
-        "Quantity": 1
-      }
-    ]
-  },
-  {
-    "Name": "Sequence",
-    "Genre": "Family",
-    "NumberOfPlayers": "2",
-    "StockItems": [
-      {
-        "Condition": "New",
-        "Price": 0,
-        "Quantity": 0
-      }
-    ]
-  },
-  {
-    "Name": "asdwa",
-    "Genre": "232",
-    "NumberOfPlayers": "2",
-    "StockItems": [
-      {
-        "Condition": "New",
-        "Price": 0,
-        "Quantity": 0
       }
     ]
   }

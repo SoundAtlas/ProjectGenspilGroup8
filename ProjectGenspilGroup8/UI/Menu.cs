@@ -386,7 +386,7 @@ namespace ProjectGenspilGroup8.UI
                     Console.WriteLine("LAGERLISTE:\n");
 
                     // Print full inventory
-                    GamePrinter.PrintGameDetails(games);
+                    GamePrinter.PrintGameDetails(games, inventoryManager);
 
                     Console.WriteLine("\nTryk på en tast for at fortsætte...");
                     Console.ReadKey();
@@ -506,7 +506,7 @@ namespace ProjectGenspilGroup8.UI
                         games = inventoryManager.GetAllGames();
                     }
 
-                    string content = GamePrinter.FormatGameDetails(games);
+                    string content = GamePrinter.FormatGameDetails(games, inventoryManager);
 
                     if (string.IsNullOrWhiteSpace(content) || content == "Ingen spil fundet.")
                     {
