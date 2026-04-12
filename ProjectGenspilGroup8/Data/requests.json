@@ -18,5 +18,15 @@
     "CustomerName": "Hans Stubbe",
     "GameName": "Backgammon",
     "Status": "Under behandling"
+  },
+  {
+    "CustomerName": "bob",
+    "GameName": "Test",
+    "Status": "Under behandling"
+  },
+  {
+    "CustomerName": "BOBBY",
+    "GameName": "Sequence",
+    "Status": "Under behandling"
   }
 ]

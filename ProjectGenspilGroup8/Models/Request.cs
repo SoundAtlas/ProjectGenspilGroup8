@@ -1,35 +1,32 @@
-﻿using System.Text.Json.Serialization;
-
-namespace ProjectGenspilGroup8.Models
+﻿namespace ProjectGenspilGroup8.Models
 {
     public class Request
     {
-        // Private backing fields (single source of truth)
-        private string _customerName;
-        private string _gameName;
-        private string _status;
+        // Allowed status values
+        public const string StatusPending = "Under behandling";
+        public const string StatusCompleted = "Fuldført";
+        public const string StatusCancelled = "Annulleret";
 
-        // Read-only properties for JSON + safe access
-        public string CustomerName => _customerName;
-        public string GameName => _gameName;
-        public string Status => _status;
+        // Auto-properties
+        public string CustomerName { get; set; }
+        public string GameName { get; set; }
+        public string Status { get; set; }
 
-        // Constructor used by JSON + normal creation
-        [JsonConstructor]
+        // Constructors
         public Request(string customerName, string gameName, string status)
         {
-            _customerName = customerName?.Trim() ?? "";
-            _gameName = gameName?.Trim() ?? "";
-            _status = status?.Trim() ?? "";
+            CustomerName = customerName;
+            GameName = gameName;
+            Status = status;
         }
 
-        // Method for updating status (controlled mutation)
-        public void SetStatus(string status)
+        // Parameterless constructor needed for JSON deserialization
+        public Request()
         {
-            if (string.IsNullOrWhiteSpace(status)) return; // Prevent invalid state
-            _status = status.Trim();
+            CustomerName = string.Empty;
+            GameName = string.Empty;
+            Status = StatusPending;
         }
-
-
     }
+}
 }

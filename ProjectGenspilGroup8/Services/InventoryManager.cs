@@ -82,6 +82,27 @@ namespace ProjectGenspilGroup8.Services
             _games.Add(game);
         }
 
+        // New: create game + stock inside service layer
+        public bool AddGameWithStock(string name, string? genre, string? numberOfPlayers, Condition condition, decimal price, int quantity)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return false;
+            }
+
+            if (price < 0 || quantity < 0)
+            {
+                return false;
+            }
+
+            Game game = new Game(name.Trim(), genre?.Trim(), numberOfPlayers?.Trim());
+            StockItem stockItem = new StockItem(condition, price, quantity);
+            game.AddStockItem(stockItem);
+
+            _games.Add(game);
+            return true;
+        }
+
         public bool UpdateGame(Game oldGame, Game updatedGame)
         {
             if (oldGame == null || updatedGame == null)
@@ -119,6 +140,23 @@ namespace ProjectGenspilGroup8.Services
                 .ToList();
         }
 
+        public Game? FindGameByExactName(string gameName)
+        {
+            if (string.IsNullOrWhiteSpace(gameName))
+            {
+                return null;
+            }
+
+            return _games.FirstOrDefault(game =>
+                string.Equals(game.GetName(), gameName, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public bool GameExists(string gameName)
+        {
+            return FindGameByExactName(gameName) != null;
+        }
+
+        // Existing method kept for compatibility
         public void AddRequest(Request request, Game? requestedGame = null)
         {
             if (request == null) return;
@@ -134,15 +172,31 @@ namespace ProjectGenspilGroup8.Services
             }
         }
 
-        public Game? FindGameByExactName(string gameName)
+        // New: request registration logic moved out of Menu
+        public bool RegisterRequest(string customerName, string gameName, string? genre, string? numberOfPlayers)
         {
-            if (string.IsNullOrWhiteSpace(gameName))
+            if (string.IsNullOrWhiteSpace(customerName) || string.IsNullOrWhiteSpace(gameName))
             {
-                return null;
+                return false;
             }
 
-            return _games.FirstOrDefault(game =>
-                string.Equals(game.GetName(), gameName, StringComparison.OrdinalIgnoreCase));
+            string trimmedCustomerName = customerName.Trim();
+            string trimmedGameName = gameName.Trim();
+
+            bool gameAlreadyExists = GameExists(trimmedGameName);
+
+            if (!gameAlreadyExists)
+            {
+                Game requestedGame = new Game(trimmedGameName, genre?.Trim(), numberOfPlayers?.Trim());
+                StockItem stockItem = new StockItem(Condition.New, 0, 0);
+                requestedGame.AddStockItem(stockItem);
+                _games.Add(requestedGame);
+            }
+
+            Request request = new Request(trimmedCustomerName, trimmedGameName, "Under behandling");
+            _requests.Add(request);
+
+            return true;
         }
 
         public int GetTotalQuantityForGame(string gameName)

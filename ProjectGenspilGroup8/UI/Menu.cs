@@ -91,7 +91,6 @@ namespace ProjectGenspilGroup8.UI
                 {
                     Console.Clear();
 
-                    // Required input for new game
                     string gameName = ConsoleHelpers.GetRequiredString("Spil Navn: ");
 
                     Console.Write("Genre: ");
@@ -100,14 +99,10 @@ namespace ProjectGenspilGroup8.UI
                     Console.Write("Antal spillere: ");
                     string? numberOfPlayers = Console.ReadLine()?.Trim();
 
-                    // Create base game object
-                    Game game = new Game(gameName, genre, numberOfPlayers);
                     Console.Clear();
 
-                    // Add initial stock item
                     Condition? condition = ConsoleHelpers.SelectCondition("Vælg spillets tilstand:");
 
-                    // Cancel if no condition selected
                     if (condition == null)
                     {
                         Console.WriteLine("Annulleret.");
@@ -116,20 +111,28 @@ namespace ProjectGenspilGroup8.UI
                         continue;
                     }
 
-                    // Required stock data
                     decimal price = ConsoleHelpers.GetDecimal("\nPris: ");
                     int quantity = ConsoleHelpers.GetInt("Antal: ");
 
-                    // Create and attach stock item to game
-                    StockItem stockItem = new StockItem(condition.Value, price, quantity);
-                    game.AddStockItem(stockItem);
+                    bool added = inventoryManager.AddGameWithStock(
+                        gameName,
+                        genre,
+                        numberOfPlayers,
+                        condition.Value,
+                        price,
+                        quantity);
 
-                    // Save game through service + persistence
-                    inventoryManager.AddGame(game);
+                    if (!added)
+                    {
+                        Console.WriteLine("Kunne ikke tilføje spillet.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
+
                     inventoryManager.SaveGames(fileHandler);
 
                     Console.Clear();
-
                     Console.WriteLine("Spil tilføjet! Tryk på en vilkårlig tast for at fortsætte.");
                     Console.ReadKey();
                     Console.Clear();
@@ -398,35 +401,38 @@ namespace ProjectGenspilGroup8.UI
                     string customerName = ConsoleHelpers.GetRequiredString("Kunde Navn: ");
                     string gameName = ConsoleHelpers.GetRequiredString("Spil Navn: ");
 
-                    Game? requestedGame = null;
+                    string? genre = null;
+                    string? numberOfPlayers = null;
 
-                    bool gameAlreadyExists = inventoryManager.GetAllGames().Any(game =>
-                        string.Equals(game.GetName(), gameName, StringComparison.OrdinalIgnoreCase));
-
-                    if (!gameAlreadyExists)
+                    if (!inventoryManager.GameExists(gameName))
                     {
                         Console.WriteLine("\nSpillet findes ikke i lageret endnu.");
                         Console.WriteLine("Det oprettes nu som et forespurgt spil med antal 0.\n");
 
                         Console.Write("Genre: ");
-                        string? genre = Console.ReadLine()?.Trim();
+                        genre = Console.ReadLine()?.Trim();
 
                         Console.Write("Antal spillere: ");
-                        string? numberOfPlayers = Console.ReadLine()?.Trim();
-
-                        requestedGame = new Game(gameName, genre, numberOfPlayers);
-                        StockItem stockItem = new StockItem(Condition.New, 0, 0);
-                        requestedGame.AddStockItem(stockItem);
+                        numberOfPlayers = Console.ReadLine()?.Trim();
                     }
 
-                    Request request = new Request(customerName, gameName, "Under behandling");
+                    bool registered = inventoryManager.RegisterRequest(
+                        customerName,
+                        gameName,
+                        genre,
+                        numberOfPlayers);
 
-                    inventoryManager.AddRequest(request, requestedGame);
+                    if (!registered)
+                    {
+                        Console.WriteLine("Kunne ikke registrere forespørgslen.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
 
                     inventoryManager.SaveAll(fileHandler);
 
                     Console.Clear();
-
                     Console.WriteLine("Forespørgsel registreret. Tryk på en vilkårlig tast for at fortsætte...");
                     Console.ReadKey();
                     Console.Clear();

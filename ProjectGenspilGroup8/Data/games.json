@@ -34,5 +34,29 @@
         "Quantity": 1
       }
     ]
+  },
+  {
+    "Name": "Test",
+    "Genre": "23",
+    "NumberOfPlayers": "2",
+    "StockItems": [
+      {
+        "Condition": "New",
+        "Price": 200,
+        "Quantity": 1
+      }
+    ]
+  },
+  {
+    "Name": "Sequence",
+    "Genre": "Family",
+    "NumberOfPlayers": "2",
+    "StockItems": [
+      {
+        "Condition": "New",
+        "Price": 0,
+        "Quantity": 0
+      }
+    ]
   }
 ]
