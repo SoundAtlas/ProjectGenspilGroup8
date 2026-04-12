@@ -13,5 +13,10 @@
     "CustomerName": "Ida Ivanovich",
     "GameName": "Matador",
     "Status": "Under behandling"
+  },
+  {
+    "CustomerName": "Hans Stubbe",
+    "GameName": "Backgammon",
+    "Status": "Under behandling"
   }
 ]

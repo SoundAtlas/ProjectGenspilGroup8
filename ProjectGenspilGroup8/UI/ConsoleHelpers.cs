@@ -84,7 +84,15 @@ namespace ProjectGenspilGroup8.UI
                 Console.Write(prompt);
                 string? input = Console.ReadLine();
 
-                if (decimal.TryParse(input, out decimal value) && value >= 0)
+                if (input == null)
+                {
+                    Console.WriteLine("Feltet må ikke være tomt, prøv igen.");
+                    continue;
+                }
+
+                // Use invariant culture to avoid comma/dot issues
+                if (decimal.TryParse(input, System.Globalization.NumberStyles.Any,
+                    System.Globalization.CultureInfo.InvariantCulture, out decimal value) && value >= 0)
                 {
                     return value;
                 }
@@ -122,10 +130,17 @@ namespace ProjectGenspilGroup8.UI
                 Console.Write(prompt);
                 string? input = Console.ReadLine();
 
+                if (input == null)
+                {
+                    Console.WriteLine("Feltet må ikke være tomt, prøv igen.");
+                    continue;
+                }
+
                 if (int.TryParse(input, out int value) && value >= 0)
                 {
                     return value;
                 }
+
                 Console.WriteLine("Ugyldigt input. Indtast et positivt heltal.");
             }
         }
@@ -137,12 +152,16 @@ namespace ProjectGenspilGroup8.UI
                 Console.Write(prompt);
                 string? input = Console.ReadLine();
 
-                if (!string.IsNullOrWhiteSpace(input))
+                if (input == null)
                 {
-                    return input;
+                    Console.WriteLine("Feltet må ikke være tomt, prøv igen.");
+                    continue;
                 }
 
-                Console.WriteLine("Feltet må ikke være tomt.");
+                if (!string.IsNullOrWhiteSpace(input))
+                {
+                    return input.Trim(); // Remove accidental spaces
+                }
             }
         }
     }
