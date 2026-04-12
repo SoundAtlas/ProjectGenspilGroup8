@@ -65,5 +65,10 @@ namespace ProjectGenspilGroup8.Persistence
 
             File.WriteAllText(requestPath, json);
         }
+
+        public void ExportToFile(string content, string filePath)
+        {
+            File.WriteAllText(filePath, content);
+        }
     }
 }

@@ -19,6 +19,7 @@ namespace ProjectGenspilGroup8.UI
                 "REGISTRER FORESPØRGELSE",
                 "SE FORESPØRGSELER",
                 "PRINT LAGERLISTE",
+                "EXPORTER LAGERLISTE TIL FIL",
                 "AFSLUT",
             };
 
@@ -300,6 +301,26 @@ namespace ProjectGenspilGroup8.UI
                 }
 
                 if (choice == 7)
+                {
+                    Console.Clear();
+
+                    var games = inventoryManager.GetAllGames();
+
+                    string content = GamePrinter.FormatGameDetails(games);
+
+                    string filePath = "..\\..\\..\\Data\\exported_inventory.txt";
+
+                    fileHandler.ExportToFile(content, filePath);
+
+                    Console.WriteLine("Lagerliste eksporteret til fil!");
+                    Console.WriteLine($"Filsti: {filePath}");
+
+                    Console.WriteLine("\nTryk på en tast for at fortsætte...");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
+
+                if (choice == 8)
                 {
                     break;
                 }
