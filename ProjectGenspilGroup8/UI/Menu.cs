@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ProjectGenspilGroup8.Models;
 using ProjectGenspilGroup8.Services;
-using ProjectGenspilGroup8.Models;
 
 namespace ProjectGenspilGroup8.UI
 {
@@ -16,11 +13,11 @@ namespace ProjectGenspilGroup8.UI
             {
                 "SØG I LAGERBEHOLDNING",
                 "TILFØJ SPIL",
-                "REDIGER SPIL",
-                "FJERN SPIL",
+                "OPDATER SPIL",
+                "SLET SPIL",
+                "SE LAGERLISTE",
                 "REGISTRER FORESPØRGELSE",
                 "SE FORESPØRGSLER",
-                "PRINT LAGERLISTE",
                 "EXPORTER LAGERLISTE TIL FIL",
                 "AFSLUT",
             };
@@ -71,14 +68,14 @@ namespace ProjectGenspilGroup8.UI
                     }
                     else
                     {
-                        Console.WriteLine($"Fundet {results.Count} spil.\n"); 
+                        Console.WriteLine($"Fundet {results.Count} spil.\n");
                         Console.WriteLine("Søgeresultater (filtreret):\n");
 
                         // Print filtered results
                         GamePrinter.PrintFilteredResults(results, condition, minPrice, maxPrice);
                         Console.ReadKey();
                     }
-                    
+
                     Console.Clear();
                 }
 
@@ -201,7 +198,7 @@ namespace ProjectGenspilGroup8.UI
                     Console.Write("Spil Navn: ");
                     string? gameName = Console.ReadLine()?.Trim();
 
-                    List<Game> results = inventoryManager.SearchGames(gameName ?? "", "", "", condition:null, minPrice: 0, maxPrice: decimal.MaxValue);
+                    List<Game> results = inventoryManager.SearchGames(gameName ?? "", "", "", condition: null, minPrice: 0, maxPrice: decimal.MaxValue);
                     Console.Clear();
 
                     // Handle no results
@@ -244,7 +241,7 @@ namespace ProjectGenspilGroup8.UI
 
                             // Persist deletion
                             fileHandler.SaveGames(inventoryManager.GetAllGames());
-                            
+
                             Console.WriteLine("\nSpil slettet!");
                             Console.WriteLine("Tryk på en tast for at fortsætte...");
                         }
@@ -254,63 +251,9 @@ namespace ProjectGenspilGroup8.UI
                     Console.Clear();
                 }
 
-                // REGISTER REQUEST
-                if (choice == 4)
-                {
-                    Console.Clear();
-
-                    // Collect request info
-                    string customerName = ConsoleHelpers.GetRequiredString("Kunde Navn: ");
-                    string gameName = ConsoleHelpers.GetRequiredString("Spil Navn: ");
-
-                    // Create request with default status
-                    Request request = new Request(customerName, gameName, "Under behandling");
-
-                    // Save request
-                    inventoryManager.AddRequest(request);
-                    fileHandler.SaveRequests(inventoryManager.GetAllRequests());
-
-                    Console.Clear(); 
-
-                    Console.WriteLine("Forespørgsel registreret. Tryk på en vilkårlig tast for at fortsætte...");
-                    Console.ReadKey();
-                    Console.Clear();
-                }
-
-                // VIEW REQUESTS
-                if (choice == 5)
-                {
-                    Console.Clear();
-
-                    var requests = inventoryManager.GetAllRequests();
-
-                    // Handle empty request list
-                    if (requests.Count == 0)
-                    {
-                        Console.WriteLine("Ingen forespørgsler fundet.");
-                    }
-
-                    else
-                    {
-                        Console.WriteLine("FORESPØRGSLER:\n");
-
-                        // Print all requests
-                        foreach (var request in requests)
-                        {
-                            Console.WriteLine($"Kunde: {request.CustomerName}");
-                            Console.WriteLine($"Spil: {request.GameName}");
-                            Console.WriteLine($"Status: {request.Status}");
-                            Console.WriteLine(new string('-', 30));
-                        }
-                    }
-
-                    Console.WriteLine("\nTryk på en tast for at fortsætte...");
-                    Console.ReadKey();
-                    Console.Clear();
-                }
 
                 // PRINT INVENTORY
-                if (choice == 6)
+                if (choice == 4)
                 {
                     Console.Clear();
 
@@ -346,6 +289,64 @@ namespace ProjectGenspilGroup8.UI
 
                     // Print full inventory
                     GamePrinter.PrintGameDetails(games);
+
+                    Console.WriteLine("\nTryk på en tast for at fortsætte...");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
+
+
+
+                // REGISTER REQUEST
+                if (choice == 5)
+                {
+                    Console.Clear();
+
+                    // Collect request info
+                    string customerName = ConsoleHelpers.GetRequiredString("Kunde Navn: ");
+                    string gameName = ConsoleHelpers.GetRequiredString("Spil Navn: ");
+
+                    // Create request with default status
+                    Request request = new Request(customerName, gameName, "Under behandling");
+
+
+                    // Save request
+                    inventoryManager.AddRequest(request);
+                    fileHandler.SaveRequests(inventoryManager.GetAllRequests());
+
+                    Console.Clear();
+
+                    Console.WriteLine("Forespørgsel registreret. Tryk på en vilkårlig tast for at fortsætte...");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
+
+                // VIEW REQUESTS
+                if (choice == 6)
+                {
+                    Console.Clear();
+
+                    var requests = inventoryManager.GetAllRequests();
+
+                    // Handle empty request list
+                    if (requests.Count == 0)
+                    {
+                        Console.WriteLine("Ingen forespørgsler fundet.");
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("FORESPØRGSLER:\n");
+
+                        // Print all requests
+                        foreach (var request in requests)
+                        {
+                            Console.WriteLine($"Kunde: {request.CustomerName}");
+                            Console.WriteLine($"Spil: {request.GameName}");
+                            Console.WriteLine($"Status: {request.Status}");
+                            Console.WriteLine(new string('-', 30));
+                        }
+                    }
 
                     Console.WriteLine("\nTryk på en tast for at fortsætte...");
                     Console.ReadKey();
