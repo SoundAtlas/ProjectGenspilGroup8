@@ -60,8 +60,9 @@ namespace ProjectGenspilGroup8.UI
                     }
                     else
                     {
-                        Console.WriteLine("Søgeresultater:\n");
-                        GamePrinter.PrintGameDetails(results);
+                        Console.WriteLine($"Fundet {results.Count} spil.\n"); 
+                        Console.WriteLine("Søgeresultater (filtreret):\n");
+                        GamePrinter.PrintFilteredResults(results, condition, minPrice, maxPrice);
                         Console.ReadKey();
                     }
                     
