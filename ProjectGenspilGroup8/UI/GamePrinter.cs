@@ -7,49 +7,59 @@ namespace ProjectGenspilGroup8.UI
 {
     internal class GamePrinter
     {
+        // Shared table header (static instead of const due to formatting)
+        private static readonly string Header =
+            string.Format("{0,-15} {1,-15} {2,-12} {3,-10} {4,-10} {5,-6}", "Navn", "Genre", "Spillere", "Stand", "Pris", "Antal");
+
+        // Prints all games with all stock items
         public static void PrintGameDetails(List<Game> games)
         {
+            // Handle empty or null input
             if (games == null || games.Count == 0)
             {
                 Console.WriteLine("Ingen spil fundet.");
                 return;
             }
 
-            Console.WriteLine(
-                $"{"Navn",-15} {"Genre",-15} {"Spillere",-12} {"Stand", -10} {"Pris",-10} {"Antal",-6}");
+            // Table header
+            Console.WriteLine(Header);
             Console.WriteLine(new string('-', 75));
 
             foreach (Game game in games)
             {
-                foreach (StockItem item in game.GetStockItems())
+                // Each stock item is printed as a separate row
+                foreach (StockItem item in game.GetStockItems() ?? new List<StockItem>())
                 {
                     Console.WriteLine(
                         $"{game.GetName(),-15} " +
                         $"{game.GetGenre(),-15} " +
                         $"{game.GetNumberOfPlayers(),-12} " +
                         $"{item.GetCondition(),-10} " +
-                        $"{item.GetPrice(),-10} " +
+                        $"{item.GetPrice(),-10:0.00} " + // Format price to 2 decimals
                         $"{item.GetQuantity(),-6}");
                 }
             }
         }
 
+        // Prints only stock items that match filter criteria
         public static void PrintFilteredResults(List<Game> games, Condition? condition, decimal minPrice, decimal maxPrice)
         {
+            // Handle empty or null input
             if (games == null || games.Count == 0)
             {
                 Console.WriteLine("Ingen spil fundet.");
                 return;
             }
 
-            Console.WriteLine(
-                $"{"Navn",-15} {"Genre",-15} {"Spillere",-12} {"Stand",-10} {"Pris",-10} {"Antal",-6}");
+            // Table header
+            Console.WriteLine(Header);
             Console.WriteLine(new string('-', 75));
 
             foreach (Game game in games)
             {
-                foreach (StockItem item in game.GetStockItems())
+                foreach (StockItem item in game.GetStockItems() ?? new List<StockItem>())
                 {
+                    // Assume match until a filter condition fails
                     bool matches = true;
 
                     if (condition.HasValue && item.GetCondition() != condition.Value)
@@ -67,6 +77,7 @@ namespace ProjectGenspilGroup8.UI
                         matches = false;
                     }
 
+                    // Only print matching stock items
                     if (matches)
                     {
                         Console.WriteLine(
@@ -74,36 +85,40 @@ namespace ProjectGenspilGroup8.UI
                             $"{game.GetGenre(),-15} " +
                             $"{game.GetNumberOfPlayers(),-12} " +
                             $"{item.GetCondition(),-10} " +
-                            $"{item.GetPrice(),-10} " +
+                            $"{item.GetPrice(),-10:0.00} " + // Format price to 2 decimals
                             $"{item.GetQuantity(),-6}");
                     }
                 }
             }
         }
 
+        // Builds formatted string (used for export instead of console output)
         public static string FormatGameDetails(List<Game> games)
         {
+            // Handle empty or null input
             if (games == null || games.Count == 0)
             {
                 return "Ingen spil fundet.";
             }
 
+            // Use StringBuilder for efficient string construction
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine($"{"Navn",-15} {"Genre",-15} {"Spillere",-12} {"Stand",-10} {"Pris",-10} {"Antal",-6}");
+            // Table header
+            sb.AppendLine(Header);
             sb.AppendLine(new string('-', 75));
 
             foreach (Game game in games)
             {
-                foreach (StockItem item in game.GetStockItems())
+                foreach (StockItem item in game.GetStockItems() ?? new List<StockItem>())
                 {
                     sb.AppendLine(
                         $"{game.GetName(),-15} " +
                         $"{game.GetGenre(),-15} " +
                         $"{game.GetNumberOfPlayers(),-12} " +
                         $"{item.GetCondition(),-10} " +
-                        $"{item.GetPrice(),-10} " +
-                        $"{item.GetQuantity(),-6}\n");
+                        $"{item.GetPrice(),-10:0.00} " + // Format price to 2 decimals
+                        $"{item.GetQuantity(),-6}");
                 }
             }
 
