@@ -34,5 +34,17 @@
         "Quantity": 1
       }
     ]
+  },
+  {
+    "Name": "Sequence",
+    "Genre": "Family",
+    "NumberOfPlayers": "2-4",
+    "StockItems": [
+      {
+        "Condition": "Good",
+        "Price": 199.99,
+        "Quantity": 2
+      }
+    ]
   }
 ]

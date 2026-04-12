@@ -133,24 +133,45 @@ namespace ProjectGenspilGroup8.UI
                 {
                     Console.Clear();
 
-                    // Find game by name
                     string searchName = ConsoleHelpers.GetRequiredString("Indtast navnet på det spil, du vil redigere: ");
+                    List<Game> matches = inventoryManager.FindGamesByName(searchName);
 
-                    Game? gameToEdit = inventoryManager.FindGameByName(searchName);
-
-                    // Handle not found
-                    if (gameToEdit == null)
+                    if (matches.Count == 0)
                     {
-                        Console.WriteLine("Spil ikke fundet.");
+                        Console.WriteLine("Ingen spil fundet.");
                         Console.ReadKey();
                         Console.Clear();
                         continue;
                     }
 
-                    Console.Clear();
+                    Console.WriteLine("\nFundne spil:");
+                    for (int i = 0; i < matches.Count; i++)
+                    {
+                        Console.WriteLine($"{i + 1}. {matches[i].GetName()} ({matches[i].GetGenre()})");
+                    }
 
-                    // Show current values and allow optional edits
+                    int selectedNumber;
+                    while (true)
+                    {
+                        Console.Write($"\nVælg et spil (1-{matches.Count}): ");
+                        string? input = Console.ReadLine();
+
+                        if (int.TryParse(input, out selectedNumber) &&
+                            selectedNumber >= 1 &&
+                            selectedNumber <= matches.Count)
+                        {
+                            break;
+                        }
+
+                        Console.WriteLine("Ugyldigt valg. Prøv igen.");
+                    }
+
+                    Game gameToEdit = matches[selectedNumber - 1];
+
+                    Console.Clear();
                     Console.WriteLine("Efterlad tom for at beholde nuværende værdi.\n");
+
+                    // Current game info
                     Console.WriteLine($"Nuværende navn: {gameToEdit.GetName()}");
                     Console.Write("Nyt navn: ");
                     string? newName = Console.ReadLine()?.Trim();
@@ -163,25 +184,96 @@ namespace ProjectGenspilGroup8.UI
                     Console.Write("Nyt antal spillere: ");
                     string? newNumberOfPlayers = Console.ReadLine()?.Trim();
 
-                    // Use existing values if input is empty
+                    // Get current stock item
+                    List<StockItem> existingStockItems = gameToEdit.GetStockItems();
+
+                    if (existingStockItems.Count == 0)
+                    {
+                        Console.WriteLine("\nSpillet har ingen lagerdata og kan ikke redigeres korrekt.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
+
+                    StockItem currentStockItem = existingStockItems[0];
+
+                    // Condition
+                    Console.WriteLine($"\nNuværende stand: {currentStockItem.GetCondition()}");
+                    Console.WriteLine("Vil du ændre stand? (Y/N)");
+                    var changeCondition = Console.ReadKey(true).Key;
+
+                    Condition finalCondition = currentStockItem.GetCondition();
+
+                    if (changeCondition == ConsoleKey.Y)
+                    {
+                        Console.Clear();
+                        Condition? selectedCondition = ConsoleHelpers.SelectCondition("Vælg ny stand (ESC for at beholde nuværende):");
+
+                        if (selectedCondition.HasValue)
+                        {
+                            finalCondition = selectedCondition.Value;
+                        }
+
+                        Console.Clear();
+                        Console.WriteLine("Efterlad tom for at beholde nuværende værdi.\n");
+                    }
+
+                    // Price
+                    Console.WriteLine($"\nNuværende pris: {currentStockItem.GetPrice():0.00}");
+                    Console.Write("Ny pris: ");
+                    string? priceInput = Console.ReadLine()?.Trim();
+
+                    decimal finalPrice = currentStockItem.GetPrice();
+                    if (!string.IsNullOrWhiteSpace(priceInput))
+                    {
+                        if (decimal.TryParse(priceInput, out decimal parsedPrice) && parsedPrice >= 0)
+                        {
+                            finalPrice = parsedPrice;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ugyldig pris. Nuværende pris beholdes.");
+                        }
+                    }
+
+                    // Quantity
+                    Console.WriteLine($"\nNuværende antal: {currentStockItem.GetQuantity()}");
+                    Console.Write("Nyt antal: ");
+                    string? quantityInput = Console.ReadLine()?.Trim();
+
+                    int finalQuantity = currentStockItem.GetQuantity();
+                    if (!string.IsNullOrWhiteSpace(quantityInput))
+                    {
+                        if (int.TryParse(quantityInput, out int parsedQuantity) && parsedQuantity >= 0)
+                        {
+                            finalQuantity = parsedQuantity;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ugyldigt antal. Nuværende antal beholdes.");
+                        }
+                    }
+
+                    // Final values
                     string finalName = string.IsNullOrWhiteSpace(newName) ? gameToEdit.GetName() : newName;
                     string finalGenre = string.IsNullOrWhiteSpace(newGenre) ? gameToEdit.GetGenre() : newGenre;
                     string finalPlayers = string.IsNullOrWhiteSpace(newNumberOfPlayers) ? gameToEdit.GetNumberOfPlayers() : newNumberOfPlayers;
 
-                    // Create updated game instance
+                    // Build updated game
                     Game updatedGame = new Game(finalName, finalGenre, finalPlayers);
+                    StockItem updatedStockItem = new StockItem(finalCondition, finalPrice, finalQuantity);
+                    updatedGame.AddStockItem(updatedStockItem);
 
-                    // Preserve existing stock items
-                    foreach (StockItem item in gameToEdit.GetStockItems() ?? new List<StockItem>())
+                    bool updated = inventoryManager.UpdateGame(gameToEdit, updatedGame);
+
+                    if (!updated)
                     {
-                        updatedGame.AddStockItem(item);
+                        Console.WriteLine("\nKunne ikke opdatere spillet.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
                     }
 
-                    // Replace old game in inventory
-                    inventoryManager.RemoveGame(gameToEdit);
-                    inventoryManager.AddGame(updatedGame);
-
-                    // Persist changes
                     fileHandler.SaveGames(inventoryManager.GetAllGames());
 
                     Console.WriteLine("\nSpil opdateret! Tryk på en vilkårlig tast for at fortsætte.");

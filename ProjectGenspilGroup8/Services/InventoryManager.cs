@@ -1,7 +1,4 @@
 ﻿using ProjectGenspilGroup8.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ProjectGenspilGroup8.Services
 {
@@ -28,6 +25,23 @@ namespace ProjectGenspilGroup8.Services
             if (game == null) return; // Prevent null entries
             _games.Add(game);
         }
+        public bool UpdateGame(Game oldGame, Game updatedGame)
+        {
+            if (oldGame == null || updatedGame == null)
+            {
+                return false;
+            }
+
+            int index = _games.IndexOf(oldGame);
+
+            if (index == -1)
+            {
+                return false;
+            }
+
+            _games[index] = updatedGame;
+            return true;
+        }
 
         public void RemoveGame(Game game)
         {
@@ -36,18 +50,17 @@ namespace ProjectGenspilGroup8.Services
         }
 
         // Returns matching game or null if not found / invalid input
-        public Game? FindGameByName (string name)
+        public List<Game> FindGamesByName(string searchTerm)
         {
-            // Prevent unnecessary search on invalid input
-            if (!string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(searchTerm))
             {
-                return _games.FirstOrDefault(game =>
-                    string.Equals(game.GetName(), name, StringComparison.OrdinalIgnoreCase));
+                return new List<Game>();
             }
-            else
-            {
-                return null;
-            }
+
+            return _games
+                .Where(game => game.GetName()
+                    .Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                .ToList();
         }
 
         public void AddRequest(Request request)
