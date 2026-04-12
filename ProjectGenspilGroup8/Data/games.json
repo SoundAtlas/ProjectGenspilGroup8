@@ -39,5 +39,46 @@
         "Quantity": 1
       }
     ]
+  },
+  {
+    "Name": "test",
+    "Genre": "232",
+    "NumberOfPlayers": "2",
+    "StockItems": [
+      {
+        "Condition": "New",
+        "Price": 0,
+        "Quantity": 0
+      }
+    ]
+  },
+  {
+    "Name": "bobby",
+    "Genre": "232",
+    "NumberOfPlayers": "2",
+    "StockItems": [
+      {
+        "Condition": "New",
+        "Price": 20,
+        "Quantity": 7
+      },
+      {
+        "Condition": "Good",
+        "Price": 10,
+        "Quantity": 2
+      }
+    ]
+  },
+  {
+    "Name": "testlol",
+    "Genre": "family",
+    "NumberOfPlayers": "2",
+    "StockItems": [
+      {
+        "Condition": "New",
+        "Price": 20,
+        "Quantity": 3
+      }
+    ]
   }
 ]

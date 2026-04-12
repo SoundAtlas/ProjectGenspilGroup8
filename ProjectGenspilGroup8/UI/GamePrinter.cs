@@ -81,7 +81,7 @@ namespace ProjectGenspilGroup8.UI
         private static string FormatGameLine(Game game, StockItem item, bool showRequested)
         {
             string quantityOrStatus = showRequested
-                ? "Requested"
+                ? "Anmodet om"
                 : item.GetQuantity().ToString();
 
             return

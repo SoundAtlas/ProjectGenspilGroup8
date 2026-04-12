@@ -75,14 +75,12 @@ namespace ProjectGenspilGroup8.Services
             fileHandler.SaveRequests(_requests);
         }
 
-        // Add/remove operations
         public void AddGame(Game game)
         {
             if (game == null) return;
             _games.Add(game);
         }
 
-        // New: create game + stock inside service layer
         public bool AddGameWithStock(string name, string? genre, string? numberOfPlayers, Condition condition, decimal price, int quantity)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -101,8 +99,7 @@ namespace ProjectGenspilGroup8.Services
 
             Game? existingGame = FindGameByExactName(trimmedName);
 
-            // Case 1: same game already exists as a requested 0-stock placeholder
-            // Replace it with a real stocked game instead of creating a duplicate entry
+            // Case 1: same game exists as a requested placeholder
             if (existingGame != null &&
                 existingGame.GetTotalQuantity() == 0 &&
                 HasRequestsForGame(trimmedName))
@@ -130,15 +127,50 @@ namespace ProjectGenspilGroup8.Services
             }
 
             // Case 2: game already exists normally
-            // Add stock to the existing game instead of creating another duplicate game
+            // Merge into existing title instead of creating duplicate game objects
             if (existingGame != null)
             {
-                StockItem stockItem = new StockItem(condition, price, quantity);
-                existingGame.AddStockItem(stockItem);
+                string finalGenre = string.IsNullOrWhiteSpace(trimmedGenre)
+                    ? existingGame.GetGenre()
+                    : trimmedGenre;
+
+                string finalPlayers = string.IsNullOrWhiteSpace(trimmedPlayers)
+                    ? existingGame.GetNumberOfPlayers()
+                    : trimmedPlayers;
+
+                Game mergedGame = new Game(trimmedName, finalGenre, finalPlayers);
+
+                bool mergedIntoExistingStock = false;
+
+                foreach (StockItem item in existingGame.GetStockItems())
+                {
+                    if (item.GetCondition() == condition && item.GetPrice() == price)
+                    {
+                        mergedGame.AddStockItem(new StockItem(item.GetCondition(), item.GetPrice(), item.GetQuantity() + quantity));
+                        mergedIntoExistingStock = true;
+                    }
+                    else
+                    {
+                        mergedGame.AddStockItem(item);
+                    }
+                }
+
+                if (!mergedIntoExistingStock)
+                {
+                    mergedGame.AddStockItem(new StockItem(condition, price, quantity));
+                }
+
+                int existingIndex = _games.IndexOf(existingGame);
+                if (existingIndex == -1)
+                {
+                    return false;
+                }
+
+                _games[existingIndex] = mergedGame;
                 return true;
             }
 
-            // Case 3: game does not exist yet
+            // Case 3: completely new title
             Game game = new Game(trimmedName, trimmedGenre, trimmedPlayers);
             StockItem newStockItem = new StockItem(condition, price, quantity);
             game.AddStockItem(newStockItem);
@@ -200,7 +232,17 @@ namespace ProjectGenspilGroup8.Services
             return FindGameByExactName(gameName) != null;
         }
 
-        // Existing method kept for compatibility
+        public bool HasRequestsForGame(string gameName)
+        {
+            if (string.IsNullOrWhiteSpace(gameName))
+            {
+                return false;
+            }
+
+            return _requests.Any(request =>
+                string.Equals(request.GameName, gameName, StringComparison.OrdinalIgnoreCase));
+        }
+
         public void AddRequest(Request request, Game? requestedGame = null)
         {
             if (request == null) return;
@@ -216,7 +258,6 @@ namespace ProjectGenspilGroup8.Services
             }
         }
 
-        // New: request registration logic moved out of Menu
         public bool RegisterRequest(string customerName, string gameName, string? genre, string? numberOfPlayers)
         {
             if (string.IsNullOrWhiteSpace(customerName) || string.IsNullOrWhiteSpace(gameName))
@@ -261,7 +302,7 @@ namespace ProjectGenspilGroup8.Services
 
             if (game == null)
             {
-                return "Ikke på lager";
+                return "Ikke i lager";
             }
 
             int totalQuantity = game.GetTotalQuantity();
@@ -274,7 +315,6 @@ namespace ProjectGenspilGroup8.Services
             return "Ikke på lager (0)";
         }
 
-        // Filters games based on multiple optional criteria
         public List<Game> SearchGames(string name, string genre, string players, Condition? condition, decimal minPrice, decimal maxPrice)
         {
             if (minPrice > maxPrice)
@@ -286,8 +326,6 @@ namespace ProjectGenspilGroup8.Services
 
             foreach (Game game in _games)
             {
-                bool gameMatches = true;
-
                 if (!string.IsNullOrEmpty(name) &&
                     !game.GetName().Contains(name, StringComparison.OrdinalIgnoreCase))
                 {
@@ -314,20 +352,17 @@ namespace ProjectGenspilGroup8.Services
                     {
                         bool itemMatches = true;
 
-                        if (condition.HasValue &&
-                            item.GetCondition() != condition.Value)
+                        if (condition.HasValue && item.GetCondition() != condition.Value)
                         {
                             itemMatches = false;
                         }
 
-                        if (minPrice > 0 &&
-                            item.GetPrice() < minPrice)
+                        if (minPrice > 0 && item.GetPrice() < minPrice)
                         {
                             itemMatches = false;
                         }
 
-                        if (maxPrice < decimal.MaxValue &&
-                            item.GetPrice() > maxPrice)
+                        if (maxPrice < decimal.MaxValue && item.GetPrice() > maxPrice)
                         {
                             itemMatches = false;
                         }
@@ -341,28 +376,14 @@ namespace ProjectGenspilGroup8.Services
 
                     if (!hasMatchingStock)
                     {
-                        gameMatches = false;
+                        continue;
                     }
                 }
 
-                if (gameMatches)
-                {
-                    results.Add(game);
-                }
+                results.Add(game);
             }
 
             return results;
-        }
-
-        public bool HasRequestsForGame(string gameName)
-        {
-            if (string.IsNullOrWhiteSpace(gameName))
-            {
-                return false;
-            }
-
-            return _requests.Any(request =>
-                string.Equals(request.GameName, gameName, StringComparison.OrdinalIgnoreCase));
         }
 
         public List<Game> SortGamesByName()
