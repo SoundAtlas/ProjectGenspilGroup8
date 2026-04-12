@@ -193,7 +193,7 @@ namespace ProjectGenspilGroup8.Services
                 _games.Add(requestedGame);
             }
 
-            Request request = new Request(trimmedCustomerName, trimmedGameName, "Under behandling");
+            Request request = new Request(trimmedCustomerName, trimmedGameName, Request.StatusPending);
             _requests.Add(request);
 
             return true;
@@ -217,7 +217,7 @@ namespace ProjectGenspilGroup8.Services
 
             if (game == null)
             {
-                return "Ikke i lager";
+                return "Ikke på lager";
             }
 
             int totalQuantity = game.GetTotalQuantity();

@@ -58,5 +58,17 @@
         "Quantity": 0
       }
     ]
+  },
+  {
+    "Name": "asdwa",
+    "Genre": "232",
+    "NumberOfPlayers": "2",
+    "StockItems": [
+      {
+        "Condition": "New",
+        "Price": 0,
+        "Quantity": 0
+      }
+    ]
   }
 ]

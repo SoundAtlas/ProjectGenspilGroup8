@@ -406,7 +406,7 @@ namespace ProjectGenspilGroup8.UI
 
                     if (!inventoryManager.GameExists(gameName))
                     {
-                        Console.WriteLine("\nSpillet findes ikke i lageret endnu.");
+                        Console.WriteLine("\nSpillet findes ikke på lageret endnu.");
                         Console.WriteLine("Det oprettes nu som et forespurgt spil med antal 0.\n");
 
                         Console.Write("Genre: ");
