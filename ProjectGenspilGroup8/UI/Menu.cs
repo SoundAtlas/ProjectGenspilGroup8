@@ -57,7 +57,14 @@ namespace ProjectGenspilGroup8.UI
                     decimal maxPrice = ConsoleHelpers.GetOptionalDecimal("Maximum pris (tryk Enter for ingen): ", decimal.MaxValue);
 
                     // Perform search in service layer
-                    List<Game> results = inventoryManager.SearchGames(gameName ?? "", genre ?? "", numberOfPlayers ?? "", condition, minPrice, maxPrice);
+                    List<Game> results = inventoryManager.SearchGames(
+                        gameName ?? "",
+                        genre ?? "",
+                        numberOfPlayers ?? "",
+                        condition,
+                        minPrice,
+                        maxPrice);
+
                     Console.Clear();
 
                     // Handle no results
@@ -290,7 +297,14 @@ namespace ProjectGenspilGroup8.UI
                     Console.Write("Spil Navn: ");
                     string? gameName = Console.ReadLine()?.Trim();
 
-                    List<Game> results = inventoryManager.SearchGames(gameName ?? "", "", "", condition: null, minPrice: 0, maxPrice: decimal.MaxValue);
+                    List<Game> results = inventoryManager.SearchGames(
+                        gameName ?? "",
+                        "",
+                        "",
+                        condition: null,
+                        minPrice: 0,
+                        maxPrice: decimal.MaxValue);
+
                     Console.Clear();
 
                     // Handle no results
@@ -343,7 +357,6 @@ namespace ProjectGenspilGroup8.UI
                     Console.Clear();
                 }
 
-
                 // PRINT INVENTORY
                 if (choice == 4)
                 {
@@ -386,7 +399,6 @@ namespace ProjectGenspilGroup8.UI
                     Console.ReadKey();
                     Console.Clear();
                 }
-
 
                 // REGISTER REQUEST
                 if (choice == 5)
@@ -468,9 +480,36 @@ namespace ProjectGenspilGroup8.UI
                 {
                     Console.Clear();
 
-                    var games = inventoryManager.GetAllGames();
+                    string[] sortOptions =
+                    {
+                        "Sortér efter navn",
+                        "Sortér efter genre",
+                        "Ingen sortering"
+                    };
 
-                    // Build export content
+                    int? sortChoice = ConsoleHelpers.Navigation("Vælg sortering for eksportfilen:", sortOptions);
+
+                    if (sortChoice == null)
+                    {
+                        Console.Clear();
+                        continue;
+                    }
+
+                    List<Game> games;
+
+                    if (sortChoice == 0)
+                    {
+                        games = inventoryManager.SortGamesByName();
+                    }
+                    else if (sortChoice == 1)
+                    {
+                        games = inventoryManager.SortGamesByGenre();
+                    }
+                    else
+                    {
+                        games = inventoryManager.GetAllGames();
+                    }
+
                     string content = GamePrinter.FormatGameDetails(games);
 
                     if (string.IsNullOrWhiteSpace(content) || content == "Ingen spil fundet.")
@@ -482,14 +521,12 @@ namespace ProjectGenspilGroup8.UI
                         continue;
                     }
 
-                    // Fixed export path (relative to project root)
                     string filePath = "..\\..\\..\\Data\\exported_inventory.txt";
-
-                    // Save to file
                     fileHandler.ExportToFile(content, filePath);
 
                     Console.WriteLine("Lagerliste eksporteret til fil!");
                     Console.WriteLine($"Filsti: {filePath}");
+                    Console.WriteLine($"Sortering: {sortOptions[sortChoice.Value]}");
 
                     Console.WriteLine("\nTryk på en tast for at fortsætte...");
                     Console.ReadKey();
