@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace ProjectGenspilGroup8.Models
 {
@@ -30,5 +29,7 @@ namespace ProjectGenspilGroup8.Models
             if (string.IsNullOrWhiteSpace(status)) return; // Prevent invalid state
             _status = status.Trim();
         }
+
+
     }
 }

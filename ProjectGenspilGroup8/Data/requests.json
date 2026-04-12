@@ -18,5 +18,20 @@
     "CustomerName": "Hans Stubbe",
     "GameName": "Backgammon",
     "Status": "Under behandling"
+  },
+  {
+    "CustomerName": "Bob Vance",
+    "GameName": "Catan",
+    "Status": "Under behandling"
+  },
+  {
+    "CustomerName": "Vance Refrigeration",
+    "GameName": "Azul",
+    "Status": "Under behandling"
+  },
+  {
+    "CustomerName": "123",
+    "GameName": "asdkoipwolkad",
+    "Status": "Under behandling"
   }
 ]

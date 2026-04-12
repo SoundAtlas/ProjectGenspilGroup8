@@ -63,11 +63,22 @@ namespace ProjectGenspilGroup8.Services
                 .ToList();
         }
 
-        public void AddRequest(Request request)
+        public void AddRequest(Request request, Game? requestedGame = null)
         {
-            if (request == null) return; // Prevent null entries
+            if (request == null) return;
+
             _requests.Add(request);
+
+            bool gameAlreadyExists = _games.Any(game =>
+                string.Equals(game.GetName(), request.GameName, StringComparison.OrdinalIgnoreCase));
+
+            if (!gameAlreadyExists && requestedGame != null)
+            {
+                _games.Add(requestedGame);
+            }
         }
+
+
 
         // Filters games based on multiple optional criteria
         public List<Game> SearchGames(string name, string genre, string players, Condition? condition, decimal minPrice, decimal maxPrice)
@@ -159,6 +170,8 @@ namespace ProjectGenspilGroup8.Services
 
             return results;
         }
+
+
 
         // Returns sorted copies (does not modify original list)
         public List<Game> SortGamesByName()

@@ -393,17 +393,36 @@ namespace ProjectGenspilGroup8.UI
                 {
                     Console.Clear();
 
-                    // Collect request info
                     string customerName = ConsoleHelpers.GetRequiredString("Kunde Navn: ");
                     string gameName = ConsoleHelpers.GetRequiredString("Spil Navn: ");
 
-                    // Create request with default status
+                    Game? requestedGame = null;
+
+                    bool gameAlreadyExists = inventoryManager.GetAllGames().Any(game =>
+                        string.Equals(game.GetName(), gameName, StringComparison.OrdinalIgnoreCase));
+
+                    if (!gameAlreadyExists)
+                    {
+                        Console.WriteLine("\nSpillet findes ikke i lageret endnu.");
+                        Console.WriteLine("Det oprettes nu som et forespurgt spil med antal 0.\n");
+
+                        Console.Write("Genre: ");
+                        string? genre = Console.ReadLine()?.Trim();
+
+                        Console.Write("Antal spillere: ");
+                        string? numberOfPlayers = Console.ReadLine()?.Trim();
+
+                        requestedGame = new Game(gameName, genre, numberOfPlayers);
+                        StockItem stockItem = new StockItem(Condition.New, 0, 0);
+                        requestedGame.AddStockItem(stockItem);
+                    }
+
                     Request request = new Request(customerName, gameName, "Under behandling");
 
+                    inventoryManager.AddRequest(request, requestedGame);
 
-                    // Save request
-                    inventoryManager.AddRequest(request);
                     fileHandler.SaveRequests(inventoryManager.GetAllRequests());
+                    fileHandler.SaveGames(inventoryManager.GetAllGames());
 
                     Console.Clear();
 

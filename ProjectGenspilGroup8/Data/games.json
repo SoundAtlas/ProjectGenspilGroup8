@@ -46,5 +46,29 @@
         "Quantity": 2
       }
     ]
+  },
+  {
+    "Name": "Azul",
+    "Genre": "",
+    "NumberOfPlayers": "2-4",
+    "StockItems": [
+      {
+        "Condition": "New",
+        "Price": 0,
+        "Quantity": 0
+      }
+    ]
+  },
+  {
+    "Name": "asdkoipwolkad",
+    "Genre": "awd",
+    "NumberOfPlayers": "2",
+    "StockItems": [
+      {
+        "Condition": "New",
+        "Price": 0,
+        "Quantity": 0
+      }
+    ]
   }
 ]
