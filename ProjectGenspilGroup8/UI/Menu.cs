@@ -296,7 +296,6 @@ namespace ProjectGenspilGroup8.UI
                 }
 
 
-
                 // REGISTER REQUEST
                 if (choice == 5)
                 {
