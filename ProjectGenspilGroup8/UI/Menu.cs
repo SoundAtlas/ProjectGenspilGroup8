@@ -313,7 +313,6 @@ namespace ProjectGenspilGroup8.UI
                         Console.WriteLine("Ingen spil fundet.");
                         Console.ReadKey();
                     }
-
                     else
                     {
                         // Build display list for selection
@@ -448,24 +447,25 @@ namespace ProjectGenspilGroup8.UI
                 {
                     Console.Clear();
 
-                    var requests = inventoryManager.GetAllRequests();
+                    List<Request> requests = inventoryManager.GetAllRequests();
 
                     // Handle empty request list
                     if (requests.Count == 0)
                     {
                         Console.WriteLine("Ingen forespørgsler fundet.");
                     }
-
                     else
                     {
                         Console.WriteLine("FORESPØRGSLER:\n");
 
-                        // Print all requests
-                        foreach (var request in requests)
+                        foreach (Request request in requests)
                         {
+                            string stockStatus = inventoryManager.GetStockStatusForGame(request.GameName);
+
                             Console.WriteLine($"Kunde: {request.CustomerName}");
                             Console.WriteLine($"Spil: {request.GameName}");
                             Console.WriteLine($"Status: {request.Status}");
+                            Console.WriteLine($"Lagerstatus: {stockStatus}");
                             Console.WriteLine(new string('-', 30));
                         }
                     }

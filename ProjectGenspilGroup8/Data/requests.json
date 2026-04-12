@@ -33,5 +33,15 @@
     "CustomerName": "123",
     "GameName": "asdkoipwolkad",
     "Status": "Under behandling"
+  },
+  {
+    "CustomerName": "LOL",
+    "GameName": "test",
+    "Status": "Under behandling"
+  },
+  {
+    "CustomerName": "Bob",
+    "GameName": "halloo",
+    "Status": "Under behandling"
   }
 ]

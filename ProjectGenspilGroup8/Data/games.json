@@ -70,5 +70,41 @@
         "Quantity": 0
       }
     ]
+  },
+  {
+    "Name": "test",
+    "Genre": "2",
+    "NumberOfPlayers": "2",
+    "StockItems": [
+      {
+        "Condition": "New",
+        "Price": 200,
+        "Quantity": 2
+      }
+    ]
+  },
+  {
+    "Name": "halloo",
+    "Genre": "idk",
+    "NumberOfPlayers": "2",
+    "StockItems": [
+      {
+        "Condition": "New",
+        "Price": 0,
+        "Quantity": 0
+      }
+    ]
+  },
+  {
+    "Name": "213123",
+    "Genre": "2",
+    "NumberOfPlayers": "2",
+    "StockItems": [
+      {
+        "Condition": "New",
+        "Price": 200,
+        "Quantity": 1
+      }
+    ]
   }
 ]

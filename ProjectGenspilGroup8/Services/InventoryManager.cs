@@ -25,6 +25,7 @@ namespace ProjectGenspilGroup8.Services
             if (game == null) return; // Prevent null entries
             _games.Add(game);
         }
+
         public bool UpdateGame(Game oldGame, Game updatedGame)
         {
             if (oldGame == null || updatedGame == null)
@@ -49,7 +50,7 @@ namespace ProjectGenspilGroup8.Services
             _games.Remove(game);
         }
 
-        // Returns matching game or null if not found / invalid input
+        // Returns matching game list or empty list if not found / invalid input
         public List<Game> FindGamesByName(string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
@@ -78,7 +79,50 @@ namespace ProjectGenspilGroup8.Services
             }
         }
 
+        // Finds a game by exact name, ignoring case
+        public Game? FindGameByExactName(string gameName)
+        {
+            if (string.IsNullOrWhiteSpace(gameName))
+            {
+                return null;
+            }
 
+            return _games.FirstOrDefault(game =>
+                string.Equals(game.GetName(), gameName, StringComparison.OrdinalIgnoreCase));
+        }
+
+        // Returns the total quantity for the game name, or 0 if not found
+        public int GetTotalQuantityForGame(string gameName)
+        {
+            Game? game = FindGameByExactName(gameName);
+
+            if (game == null)
+            {
+                return 0;
+            }
+
+            return game.GetTotalQuantity();
+        }
+
+        // Returns a user-friendly stock status for request view
+        public string GetStockStatusForGame(string gameName)
+        {
+            Game? game = FindGameByExactName(gameName);
+
+            if (game == null)
+            {
+                return "Ikke i lager";
+            }
+
+            int totalQuantity = game.GetTotalQuantity();
+
+            if (totalQuantity > 0)
+            {
+                return $"På lager ({totalQuantity})";
+            }
+
+            return "Ikke på lager (0)";
+        }
 
         // Filters games based on multiple optional criteria
         public List<Game> SearchGames(string name, string genre, string players, Condition? condition, decimal minPrice, decimal maxPrice)
@@ -170,8 +214,6 @@ namespace ProjectGenspilGroup8.Services
 
             return results;
         }
-
-
 
         // Returns sorted copies (does not modify original list)
         public List<Game> SortGamesByName()
