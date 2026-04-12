@@ -87,7 +87,9 @@ namespace ProjectGenspilGroup8.UI
                     continue;
                 }
 
-                // Use invariant culture to avoid comma/dot issues
+                // Normalize input to support both ',' and '.'
+                input = input.Replace(',', '.');
+
                 if (decimal.TryParse(input, System.Globalization.NumberStyles.Any,
                     System.Globalization.CultureInfo.InvariantCulture, out decimal value) && value >= 0)
                 {
@@ -104,6 +106,8 @@ namespace ProjectGenspilGroup8.UI
             {
                 Console.Write(prompt);
                 string? input = Console.ReadLine();
+
+                input = input.Replace(',', '.');
 
                 // Empty = use default (no filter)
                 if (string.IsNullOrWhiteSpace(input))

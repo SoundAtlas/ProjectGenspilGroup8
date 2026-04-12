@@ -34,5 +34,17 @@
         "Quantity": 1
       }
     ]
+  },
+  {
+    "Name": "Yatzee",
+    "Genre": "Classic",
+    "NumberOfPlayers": "2\u002B",
+    "StockItems": [
+      {
+        "Condition": "God",
+        "Price": 49.95,
+        "Quantity": 1
+      }
+    ]
   }
 ]
