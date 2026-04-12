@@ -288,71 +288,62 @@ namespace ProjectGenspilGroup8.UI
                     Console.Clear();
                 }
 
-                // DELETE GAME
+                // REMOVE GAME
                 if (choice == 3)
                 {
                     Console.Clear();
 
-                    // Search for games by name
-                    Console.Write("Spil Navn: ");
-                    string? gameName = Console.ReadLine()?.Trim();
+                    string searchName = ConsoleHelpers.GetRequiredString("Indtast navnet på det spil, du vil slette: ");
+                    List<Game> matches = inventoryManager.FindGamesByName(searchName);
 
-                    List<Game> results = inventoryManager.SearchGames(
-                        gameName ?? "",
-                        "",
-                        "",
-                        condition: null,
-                        minPrice: 0,
-                        maxPrice: decimal.MaxValue);
-
-                    Console.Clear();
-
-                    // Handle no results
-                    if (results.Count == 0)
+                    if (matches.Count == 0)
                     {
                         Console.WriteLine("Ingen spil fundet.");
                         Console.ReadKey();
+                        Console.Clear();
+                        continue;
                     }
-                    else
+
+                    Console.WriteLine("\nFundne spil:");
+                    for (int i = 0; i < matches.Count; i++)
                     {
-                        // Build display list for selection
-                        List<string> gameOptions = new List<string>();
-
-                        foreach (Game game in results)
-                        {
-                            gameOptions.Add($"- {game.GetName()} | Genre: {game.GetGenre()} | Antal spillere: {game.GetNumberOfPlayers()} | På lager: {game.GetTotalQuantity()}");
-                        }
-
-                        // Let user pick which game to delete
-                        int? deletionChoice = ConsoleHelpers.Navigation("Vælg det spil, der skal slettes:", gameOptions.ToArray());
-
-                        if (deletionChoice.HasValue)
-                        {
-                            Game selectedGame = results[deletionChoice.Value];
-
-                            Console.WriteLine($"\nEr du sikker på, at du vil slette '{selectedGame.GetName()}'? (Y/N)");
-                            var confirm = Console.ReadKey(true).Key;
-
-                            if (confirm != ConsoleKey.Y)
-                            {
-                                Console.WriteLine("\nSletning annulleret.");
-                                Console.ReadKey();
-                                Console.Clear();
-                                continue;
-                            }
-
-                            // Remove from inventory
-                            inventoryManager.RemoveGame(selectedGame);
-
-                            // Persist deletion
-                            inventoryManager.SaveGames(fileHandler);
-
-                            Console.WriteLine("\nSpil slettet!");
-                            Console.WriteLine("Tryk på en tast for at fortsætte...");
-                        }
-                        Console.ReadKey();
+                        Console.WriteLine($"{i + 1}. {matches[i].GetName()} ({matches[i].GetGenre()}) | Antal spillere: {matches[i].GetNumberOfPlayers()} | På lager: {matches[i].GetTotalQuantity()}");
                     }
 
+                    int selectedNumber;
+                    while (true)
+                    {
+                        Console.Write($"\nVælg et spil (1-{matches.Count}): ");
+                        string? input = Console.ReadLine();
+
+                        if (int.TryParse(input, out selectedNumber) &&
+                            selectedNumber >= 1 &&
+                            selectedNumber <= matches.Count)
+                        {
+                            break;
+                        }
+
+                        Console.WriteLine("Ugyldigt valg. Prøv igen.");
+                    }
+
+                    Game gameToDelete = matches[selectedNumber - 1];
+
+                    Console.WriteLine($"\nEr du sikker på, at du vil slette '{gameToDelete.GetName()}'? (Y/N)");
+                    var confirm = Console.ReadKey(true).Key;
+
+                    if (confirm != ConsoleKey.Y)
+                    {
+                        Console.WriteLine("\nSletning annulleret.");
+                        Console.ReadKey();
+                        Console.Clear();
+                        continue;
+                    }
+
+                    inventoryManager.RemoveGame(gameToDelete);
+                    inventoryManager.SaveGames(fileHandler);
+
+                    Console.WriteLine("\nSpil slettet! Tryk på en vilkårlig tast for at fortsætte.");
+                    Console.ReadKey();
                     Console.Clear();
                 }
 
