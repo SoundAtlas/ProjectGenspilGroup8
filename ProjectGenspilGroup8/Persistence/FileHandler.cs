@@ -19,14 +19,26 @@ namespace ProjectGenspilGroup8.Persistence
                 File.WriteAllText(gamePath, "[]");
                 return new List<Game>();
             }
-            string json = File.ReadAllText(gamePath);
 
-            if (string.IsNullOrWhiteSpace(json))
+            try
             {
-                return new List<Game>();
+                string json = File.ReadAllText(gamePath);
+
+                if (string.IsNullOrWhiteSpace(json))
+                {
+                    return new List<Game>();
+                }
+
+                return JsonSerializer.Deserialize<List<Game>>(json) ?? new List<Game>();
             }
 
-            return JsonSerializer.Deserialize<List<Game>>(json) ?? new List<Game>();
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fejl ved indlæsning af spildata.");
+                Console.WriteLine($"Detaljer: {ex.Message}");
+
+                return new List<Game>();
+            }
         }
 
         public void SaveGames(List<Game> games)
@@ -36,7 +48,16 @@ namespace ProjectGenspilGroup8.Persistence
                 WriteIndented = true 
             });
 
-            File.WriteAllText(gamePath, json);
+            try
+            {
+                File.WriteAllText(gamePath, json);
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fejl ved gemning af spildata.");
+                Console.WriteLine($"Detaljer: {ex.Message}");
+            }
         }
 
         public List<Request> LoadRequests()
@@ -46,14 +67,26 @@ namespace ProjectGenspilGroup8.Persistence
                 File.WriteAllText(requestPath, "[]");
                 return new List<Request>();
             }
-            string json = File.ReadAllText(requestPath);
 
-            if (string.IsNullOrWhiteSpace(json))
+            try
             {
-                return new List<Request>();
+                string json = File.ReadAllText(requestPath);
+
+                if (string.IsNullOrWhiteSpace(json))
+                {
+                    return new List<Request>();
+                }
+
+                return JsonSerializer.Deserialize<List<Request>>(json) ?? new List<Request>();
             }
 
-            return JsonSerializer.Deserialize<List<Request>>(json) ?? new List<Request>();
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fejl ved indlæsning af forespørgsler.");
+                Console.WriteLine($"Detaljer: {ex.Message}");
+
+                return new List<Request>();
+            }
         }
 
         public void SaveRequests(List<Request> requests)
@@ -63,12 +96,30 @@ namespace ProjectGenspilGroup8.Persistence
                 WriteIndented = true
             });
 
-            File.WriteAllText(requestPath, json);
+            try
+            {
+                File.WriteAllText(requestPath, json);
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fejl ved gemning af forespørgsler.");
+                Console.WriteLine($"Detaljer: {ex.Message}");
+            }
         }
 
         public void ExportToFile(string content, string filePath)
         {
-            File.WriteAllText(filePath, content);
+            try
+            {
+                File.WriteAllText(filePath, content);
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fejl ved eksport af fil.");
+                Console.WriteLine($"Detaljer: {ex.Message}");
+            }
         }
     }
 }

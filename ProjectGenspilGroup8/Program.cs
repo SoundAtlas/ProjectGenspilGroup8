@@ -7,20 +7,32 @@ namespace ProjectGenspilGroup8
     {
         static void Main(string[] args)
         {
-            Persistence.FileHandler fileHandler = new Persistence.FileHandler();
-            InventoryManager inventoryManager = new InventoryManager();
-
-            foreach (var game in fileHandler.LoadGames())
+            try
             {
-                inventoryManager.AddGame(game);
+                Persistence.FileHandler fileHandler = new Persistence.FileHandler();
+                InventoryManager inventoryManager = new InventoryManager();
+
+                foreach (var game in fileHandler.LoadGames())
+                {
+                    inventoryManager.AddGame(game);
+                }
+
+                foreach (var request in fileHandler.LoadRequests())
+                {
+                    inventoryManager.AddRequest(request);
+                }
+
+                Menu.MenuMain(inventoryManager, fileHandler);
             }
 
-            foreach (var request in fileHandler.LoadRequests())
+            catch (Exception ex)
             {
-                inventoryManager.AddRequest(request);
+                Console.WriteLine("En uventet fejl opstod.");
+                Console.WriteLine($"Detaljer: {ex.Message}");
+                Console.WriteLine("Tryk på en tast for at afslutte...");
+                Console.ReadKey();
             }
-
-            Menu.MenuMain(inventoryManager, fileHandler);
         }
+
     }
 }
