@@ -1,4 +1,5 @@
 ﻿using ProjectGenspilGroup8.Models;
+using ProjectGenspilGroup8.Persistence;
 
 namespace ProjectGenspilGroup8.Services
 {
@@ -15,14 +16,69 @@ namespace ProjectGenspilGroup8.Services
             _requests = new List<Request>();
         }
 
-        // Properties
-        public List<Game> GetAllGames() => new List<Game>(_games); // Return copy to protect internal state
+        // Read-only copies to protect internal state
+        public List<Game> GetAllGames() => new List<Game>(_games);
         public List<Request> GetAllRequests() => new List<Request>(_requests);
+
+        // Replace in-memory data when loading from persistence
+        public void SetGames(List<Game> games)
+        {
+            _games = games ?? new List<Game>();
+        }
+
+        public void SetRequests(List<Request> requests)
+        {
+            _requests = requests ?? new List<Request>();
+        }
+
+        // Startup load methods
+        public void LoadData(FileHandler fileHandler)
+        {
+            if (fileHandler == null)
+            {
+                return;
+            }
+
+            SetGames(fileHandler.LoadGames());
+            SetRequests(fileHandler.LoadRequests());
+        }
+
+        // Save methods
+        public void SaveGames(FileHandler fileHandler)
+        {
+            if (fileHandler == null)
+            {
+                return;
+            }
+
+            fileHandler.SaveGames(_games);
+        }
+
+        public void SaveRequests(FileHandler fileHandler)
+        {
+            if (fileHandler == null)
+            {
+                return;
+            }
+
+            fileHandler.SaveRequests(_requests);
+        }
+
+        public void SaveAll(FileHandler fileHandler)
+        {
+            if (fileHandler == null)
+            {
+                return;
+            }
+
+            fileHandler.SaveGames(_games);
+            fileHandler.SaveRequests(_requests);
+        }
 
         // Add/remove operations
         public void AddGame(Game game)
         {
-            if (game == null) return; // Prevent null entries
+            if (game == null) return;
             _games.Add(game);
         }
 
@@ -46,11 +102,10 @@ namespace ProjectGenspilGroup8.Services
 
         public void RemoveGame(Game game)
         {
-            if (game == null) return; // Avoid invalid remove call
+            if (game == null) return;
             _games.Remove(game);
         }
 
-        // Returns matching game list or empty list if not found / invalid input
         public List<Game> FindGamesByName(string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
@@ -79,7 +134,6 @@ namespace ProjectGenspilGroup8.Services
             }
         }
 
-        // Finds a game by exact name, ignoring case
         public Game? FindGameByExactName(string gameName)
         {
             if (string.IsNullOrWhiteSpace(gameName))
@@ -91,7 +145,6 @@ namespace ProjectGenspilGroup8.Services
                 string.Equals(game.GetName(), gameName, StringComparison.OrdinalIgnoreCase));
         }
 
-        // Returns the total quantity for the game name, or 0 if not found
         public int GetTotalQuantityForGame(string gameName)
         {
             Game? game = FindGameByExactName(gameName);
@@ -104,7 +157,6 @@ namespace ProjectGenspilGroup8.Services
             return game.GetTotalQuantity();
         }
 
-        // Returns a user-friendly stock status for request view
         public string GetStockStatusForGame(string gameName)
         {
             Game? game = FindGameByExactName(gameName);
@@ -127,7 +179,6 @@ namespace ProjectGenspilGroup8.Services
         // Filters games based on multiple optional criteria
         public List<Game> SearchGames(string name, string genre, string players, Condition? condition, decimal minPrice, decimal maxPrice)
         {
-            // Invalid price range -> no results
             if (minPrice > maxPrice)
             {
                 return new List<Game>();
@@ -137,62 +188,52 @@ namespace ProjectGenspilGroup8.Services
 
             foreach (Game game in _games)
             {
-                // Assume match until a filter fails
                 bool gameMatches = true;
 
-                // Name filter (partial match)
                 if (!string.IsNullOrEmpty(name) &&
                     !game.GetName().Contains(name, StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
 
-                // Genre filter (exact match)
                 if (!string.IsNullOrEmpty(genre) &&
                     !string.Equals(game.GetGenre(), genre, StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
 
-                // Players filter
                 if (!string.IsNullOrEmpty(players) &&
                     game.GetNumberOfPlayers() != players)
                 {
                     continue;
                 }
 
-                // Apply stock filters only if at least one is active
                 if (condition.HasValue || minPrice > 0 || maxPrice < decimal.MaxValue)
                 {
                     bool hasMatchingStock = false;
 
-                    // Check if ANY stock item satisfies filters
                     foreach (StockItem item in game.GetStockItems())
                     {
                         bool itemMatches = true;
 
-                        // Condition
                         if (condition.HasValue &&
                             item.GetCondition() != condition.Value)
                         {
                             itemMatches = false;
                         }
 
-                        // Min price
                         if (minPrice > 0 &&
                             item.GetPrice() < minPrice)
                         {
                             itemMatches = false;
                         }
 
-                        // Max price
                         if (maxPrice < decimal.MaxValue &&
                             item.GetPrice() > maxPrice)
                         {
                             itemMatches = false;
                         }
 
-                        // At least ONE matching stock item is enough
                         if (itemMatches)
                         {
                             hasMatchingStock = true;
@@ -215,7 +256,6 @@ namespace ProjectGenspilGroup8.Services
             return results;
         }
 
-        // Returns sorted copies (does not modify original list)
         public List<Game> SortGamesByName()
         {
             return _games.OrderBy(game => game.GetName()).ToList();

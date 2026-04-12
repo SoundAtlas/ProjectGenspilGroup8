@@ -3,7 +3,7 @@ using ProjectGenspilGroup8.Services;
 
 namespace ProjectGenspilGroup8.UI
 {
-    internal class Menu
+    public class Menu
     {
         // Main menu loop (entry point for all user interaction)
         public static void MenuMain(InventoryManager inventoryManager, Persistence.FileHandler fileHandler)
@@ -126,7 +126,7 @@ namespace ProjectGenspilGroup8.UI
 
                     // Save game through service + persistence
                     inventoryManager.AddGame(game);
-                    fileHandler.SaveGames(inventoryManager.GetAllGames());
+                    inventoryManager.SaveGames(fileHandler);
 
                     Console.Clear();
 
@@ -281,14 +281,14 @@ namespace ProjectGenspilGroup8.UI
                         continue;
                     }
 
-                    fileHandler.SaveGames(inventoryManager.GetAllGames());
+                    inventoryManager.SaveGames(fileHandler);
 
                     Console.WriteLine("\nSpil opdateret! Tryk på en vilkårlig tast for at fortsætte.");
                     Console.ReadKey();
                     Console.Clear();
                 }
 
-                // REMOVE GAME
+                // DELETE GAME
                 if (choice == 3)
                 {
                     Console.Clear();
@@ -345,7 +345,7 @@ namespace ProjectGenspilGroup8.UI
                             inventoryManager.RemoveGame(selectedGame);
 
                             // Persist deletion
-                            fileHandler.SaveGames(inventoryManager.GetAllGames());
+                            inventoryManager.SaveGames(fileHandler);
 
                             Console.WriteLine("\nSpil slettet!");
                             Console.WriteLine("Tryk på en tast for at fortsætte...");
@@ -432,8 +432,7 @@ namespace ProjectGenspilGroup8.UI
 
                     inventoryManager.AddRequest(request, requestedGame);
 
-                    fileHandler.SaveRequests(inventoryManager.GetAllRequests());
-                    fileHandler.SaveGames(inventoryManager.GetAllGames());
+                    inventoryManager.SaveAll(fileHandler);
 
                     Console.Clear();
 

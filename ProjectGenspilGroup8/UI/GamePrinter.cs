@@ -3,7 +3,7 @@ using System.Text;
 
 namespace ProjectGenspilGroup8.UI
 {
-    internal class GamePrinter
+    public class GamePrinter
     {
         private const string Header = "Navn            Genre           Spillere     Stand      Pris       Antal ";
 

@@ -2,7 +2,7 @@
 
 namespace ProjectGenspilGroup8.UI
 {
-    internal class ConsoleHelpers
+    public class ConsoleHelpers
     {
 
         public static int? Navigation(string title, string[] options)
