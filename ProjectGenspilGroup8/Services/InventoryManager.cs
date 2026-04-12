@@ -95,7 +95,7 @@ namespace ProjectGenspilGroup8.Services
 
             string trimmedName = name.Trim();
             string? trimmedGenre = genre?.Trim();
-            string? trimmedPlayers = numberOfPlayers?.Trim();
+            string normalizedPlayers = NormalizeNumberOfPlayers(numberOfPlayers);
 
             Game? existingGame = FindGameByExactName(trimmedName);
 
@@ -108,9 +108,9 @@ namespace ProjectGenspilGroup8.Services
                     ? existingGame.GetGenre()
                     : trimmedGenre;
 
-                string finalPlayers = string.IsNullOrWhiteSpace(trimmedPlayers)
+                string finalPlayers = string.IsNullOrWhiteSpace(normalizedPlayers)
                     ? existingGame.GetNumberOfPlayers()
-                    : trimmedPlayers;
+                    : normalizedPlayers;
 
                 Game updatedGame = new Game(trimmedName, finalGenre, finalPlayers);
                 StockItem stockItem = new StockItem(condition, price, quantity);
@@ -134,9 +134,9 @@ namespace ProjectGenspilGroup8.Services
                     ? existingGame.GetGenre()
                     : trimmedGenre;
 
-                string finalPlayers = string.IsNullOrWhiteSpace(trimmedPlayers)
+                string finalPlayers = string.IsNullOrWhiteSpace(normalizedPlayers)
                     ? existingGame.GetNumberOfPlayers()
-                    : trimmedPlayers;
+                    : normalizedPlayers;
 
                 Game mergedGame = new Game(trimmedName, finalGenre, finalPlayers);
 
@@ -171,7 +171,7 @@ namespace ProjectGenspilGroup8.Services
             }
 
             // Case 3: completely new title
-            Game game = new Game(trimmedName, trimmedGenre, trimmedPlayers);
+            Game game = new Game(trimmedName, trimmedGenre, normalizedPlayers);
             StockItem newStockItem = new StockItem(condition, price, quantity);
             game.AddStockItem(newStockItem);
 
@@ -272,7 +272,8 @@ namespace ProjectGenspilGroup8.Services
 
             if (!gameAlreadyExists)
             {
-                Game requestedGame = new Game(trimmedGameName, genre?.Trim(), numberOfPlayers?.Trim());
+                string normalizedPlayers = NormalizeNumberOfPlayers(numberOfPlayers);
+                Game requestedGame = new Game(trimmedGameName, genre?.Trim(), normalizedPlayers);
                 StockItem stockItem = new StockItem(Condition.New, 0, 0);
                 requestedGame.AddStockItem(stockItem);
                 _games.Add(requestedGame);
@@ -322,6 +323,10 @@ namespace ProjectGenspilGroup8.Services
                 return new List<Game>();
             }
 
+            name = name?.Trim() ?? "";
+            genre = genre?.Trim() ?? "";
+            players = NormalizeNumberOfPlayers(players);
+
             List<Game> results = new List<Game>();
 
             foreach (Game game in _games)
@@ -339,7 +344,7 @@ namespace ProjectGenspilGroup8.Services
                 }
 
                 if (!string.IsNullOrEmpty(players) &&
-                    game.GetNumberOfPlayers() != players)
+                    !MatchesPlayers(game.GetNumberOfPlayers(), players))
                 {
                     continue;
                 }
@@ -384,6 +389,45 @@ namespace ProjectGenspilGroup8.Services
             }
 
             return results;
+        }
+
+        public string NormalizeNumberOfPlayers(string? input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return "";
+            }
+
+            string value = input.Trim().ToLower();
+
+            value = value.Replace("spillere", "")
+                         .Replace("spiller", "")
+                         .Replace("players", "")
+                         .Replace("player", "")
+                         .Trim();
+
+            // Remove all spaces first
+            value = value.Replace(" ", "");
+
+            // Standardize separators
+            value = value.Replace("to", "-")
+                         .Replace("til", "-");
+
+            // Clean up accidental double separators
+            while (value.Contains("--"))
+            {
+                value = value.Replace("--", "-");
+            }
+
+            return value;
+        }
+
+        private bool MatchesPlayers(string storedValue, string searchValue)
+        {
+            string normalizedStored = NormalizeNumberOfPlayers(storedValue);
+            string normalizedSearch = NormalizeNumberOfPlayers(searchValue);
+
+            return string.Equals(normalizedStored, normalizedSearch, StringComparison.OrdinalIgnoreCase);
         }
 
         public List<Game> SortGamesByName()

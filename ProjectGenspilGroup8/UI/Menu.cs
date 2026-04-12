@@ -46,7 +46,7 @@ namespace ProjectGenspilGroup8.UI
                     Console.Write("Genre: ");
                     string? genre = Console.ReadLine()?.Trim();
 
-                    Console.Write("Antal spillere: ");
+                    Console.Write("Antal spillere (fx 2, 2-4, 4+): ");
                     string? numberOfPlayers = Console.ReadLine()?.Trim();
 
                     // Optional condition filter (ESC = skip)
@@ -96,7 +96,7 @@ namespace ProjectGenspilGroup8.UI
                     Console.Write("Genre: ");
                     string? genre = Console.ReadLine()?.Trim();
 
-                    Console.Write("Antal spillere: ");
+                    Console.Write("Antal spillere (fx 2, 2-4, 4+): ");
                     string? numberOfPlayers = Console.ReadLine()?.Trim();
 
                     Console.Clear();
@@ -267,7 +267,9 @@ namespace ProjectGenspilGroup8.UI
                     // Final values
                     string finalName = string.IsNullOrWhiteSpace(newName) ? gameToEdit.GetName() : newName;
                     string finalGenre = string.IsNullOrWhiteSpace(newGenre) ? gameToEdit.GetGenre() : newGenre;
-                    string finalPlayers = string.IsNullOrWhiteSpace(newNumberOfPlayers) ? gameToEdit.GetNumberOfPlayers() : newNumberOfPlayers;
+                    string finalPlayers = string.IsNullOrWhiteSpace(newNumberOfPlayers)
+                        ? gameToEdit.GetNumberOfPlayers()
+                        : inventoryManager.NormalizeNumberOfPlayers(newNumberOfPlayers);
 
                     // Build updated game
                     Game updatedGame = new Game(finalName, finalGenre, finalPlayers);
@@ -412,7 +414,7 @@ namespace ProjectGenspilGroup8.UI
                         Console.Write("Genre: ");
                         genre = Console.ReadLine()?.Trim();
 
-                        Console.Write("Antal spillere: ");
+                        Console.Write("Antal spillere (fx 2, 2-4, 4+): ");
                         numberOfPlayers = Console.ReadLine()?.Trim();
                     }
 

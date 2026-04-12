@@ -13,25 +13,5 @@
     "CustomerName": "Ida Ivanovich",
     "GameName": "Matador",
     "Status": "Under behandling"
-  },
-  {
-    "CustomerName": "Hans Stubbe",
-    "GameName": "Backgammon",
-    "Status": "Under behandling"
-  },
-  {
-    "CustomerName": "Bob",
-    "GameName": "Sequence",
-    "Status": "Under behandling"
-  },
-  {
-    "CustomerName": "test",
-    "GameName": "test",
-    "Status": "Under behandling"
-  },
-  {
-    "CustomerName": "Bobby",
-    "GameName": "testlol",
-    "Status": "Under behandling"
   }
 ]
