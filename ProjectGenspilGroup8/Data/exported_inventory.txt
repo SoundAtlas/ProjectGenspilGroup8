@@ -1,8 +1,5 @@
 Navn            Genre           Spillere     Stand      Pris       Antal 
 ---------------------------------------------------------------------------
 Ludo            Classic         2-4          New        149.95     2     
-
-Catan           Strategy        3-4          Good       100        2     
-
+Catan           Strategy        3-4          Good       100.00     2     
 Catan           Strategy        3-4          Worn       39.95      1     
-

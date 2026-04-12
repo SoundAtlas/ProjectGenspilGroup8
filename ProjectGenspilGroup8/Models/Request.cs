@@ -15,15 +15,8 @@ namespace ProjectGenspilGroup8.Models
         public string GameName => _gameName;
         public string Status => _status;
 
-        // Empty constructor (required for deserialization)
-        public Request()
-        {
-            _customerName = "";
-            _gameName = "";
-            _status = "";
-        }
-
-        // Constructor for creating new requests
+        // Constructor used by JSON + normal creation
+        [JsonConstructor]
         public Request(string customerName, string gameName, string status)
         {
             _customerName = customerName?.Trim() ?? "";
