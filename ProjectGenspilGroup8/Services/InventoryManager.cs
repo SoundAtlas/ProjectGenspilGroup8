@@ -274,7 +274,7 @@ namespace ProjectGenspilGroup8.Services
             {
                 string normalizedPlayers = NormalizeNumberOfPlayers(numberOfPlayers);
                 Game requestedGame = new Game(trimmedGameName, genre?.Trim(), normalizedPlayers);
-                StockItem stockItem = new StockItem(Condition.New, 0, 0);
+                StockItem stockItem = new StockItem(Condition.Ny, 0, 0);
                 requestedGame.AddStockItem(stockItem);
                 _games.Add(requestedGame);
             }

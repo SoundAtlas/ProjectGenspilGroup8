@@ -5,7 +5,7 @@
     "NumberOfPlayers": "2-4",
     "StockItems": [
       {
-        "Condition": "New",
+        "Condition": "Ny",
         "Price": 149.95,
         "Quantity": 2
       }
@@ -17,7 +17,7 @@
     "NumberOfPlayers": "3-4",
     "StockItems": [
       {
-        "Condition": "Good",
+        "Condition": "God",
         "Price": 100,
         "Quantity": 2
       }
@@ -29,7 +29,7 @@
     "NumberOfPlayers": "3-4",
     "StockItems": [
       {
-        "Condition": "Worn",
+        "Condition": "Brugt",
         "Price": 39.95,
         "Quantity": 1
       }
