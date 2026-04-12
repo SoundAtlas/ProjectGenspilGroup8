@@ -1,31 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Text.Json.Serialization;
 
 namespace ProjectGenspilGroup8.Models
 {
     public class Request
     {
-        // Properties (needed for JSON)
-        public string CustomerName { get; set; }
-        public string GameName { get; set; }
-        public string Status { get; set; }
+        // Private backing fields (single source of truth)
+        private string _customerName;
+        private string _gameName;
+        private string _status;
+
+        // Read-only properties for JSON + safe access
+        public string CustomerName => _customerName;
+        public string GameName => _gameName;
+        public string Status => _status;
 
         // Empty constructor (required for deserialization)
-        public Request() { }
-
-        // Constructor
-        public Request(string customerName, string gameName, string status)
+        public Request()
         {
-            CustomerName = customerName;
-            GameName = gameName;
-            Status = status;
+            _customerName = "";
+            _gameName = "";
+            _status = "";
         }
 
-        // Method
+        // Constructor for creating new requests
+        public Request(string customerName, string gameName, string status)
+        {
+            _customerName = customerName?.Trim() ?? "";
+            _gameName = gameName?.Trim() ?? "";
+            _status = status?.Trim() ?? "";
+        }
+
+        // Method for updating status (controlled mutation)
         public void SetStatus(string status)
         {
-            Status = status;
+            if (string.IsNullOrWhiteSpace(status)) return; // Prevent invalid state
+            _status = status.Trim();
         }
     }
 }
