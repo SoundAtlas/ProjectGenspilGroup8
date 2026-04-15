@@ -83,6 +83,7 @@ ProjectGenspilGroup8/
 ├── ProjectGenspilGroup8/   # Main application code  
 ├── docs/                  # Reports and design models  
 ├── README.md  
+├── .gitattributes
 ├── .gitignore  
 └── ProjectGenspilGroup8.slnx  
 
