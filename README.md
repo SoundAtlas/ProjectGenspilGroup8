@@ -78,14 +78,15 @@ The system implements the following core use cases:
 
 ## Project Structure
 
+```
 ProjectGenspilGroup8/
-
-├── ProjectGenspilGroup8/   # Main application code  
-├── docs/                  # Reports and design models  
-├── README.md  
+├── ProjectGenspilGroup8/   # Main application code
+├── docs/                   # Reports and design models
+├── README.md
 ├── .gitattributes
-├── .gitignore  
-└── ProjectGenspilGroup8.slnx  
+├── .gitignore
+└── ProjectGenspilGroup8.slnx
+```
 
 ---
 
